@@ -8,13 +8,13 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <style type="text/css">
         body {margin: 0 auto;padding-left: 50px;}
-		#score{width:800px;height:250px;background:#ccc;}
+		#score{width:800px;height:300px;background:#ccc;}
 		.worte {
 			display:none;
-			width: 55px; height: 20px; background-color: #FFF; border: 1px solid black; text-align: center; padding:7px; float: left;margin-left: 3px;
+			width: 80px; height: 20px; background-color: #FFF; border: 1px solid black; text-align: center; padding:7px; float: left;margin-left: 3px;
 		}
 		#leben, #punkte {background:#000;
-		color:#fff;}
+		color:#fff;padding: 10px;}
 		
     </style>
 </head>
@@ -49,28 +49,34 @@
 <div class="worte" id="domino25">im</div>
 <div class="worte" id="domino26">Gebäude 06</div>
 <div class="worte" id="domino27">der</div>
-<div class="worte" id="domino28">AG</div>
+
+	<div class="worte" id="domino28">AG</div>
+
 <div class="worte" id="domino29">Kultur.</div>
+
 <div class="worte" id="domino30">Beginn</div>
 <div class="worte" id="domino31">des</div>
-<div class="worte" id="domino32">Tanzes</div>
+<div class="worte" id="domino32">Tanzes</div>   
 <div class="worte" id="domino33">ist</div>
 <div class="worte" id="domino34">um</div>
 <div class="worte" id="domino35">20:00</div>
 <div class="worte" id="domino36">Uhr</div>
-<div class="worte" id="domino37">Es</div>
+<div class="worte" id="domino37">Es</div>  
 <div class="worte" id="domino38">wird</div>
 <div class="worte" id="domino39">gegrillt</div>
 <div class="worte" id="domino40">und</div>
 <div class="worte" id="domino41">es</div>
 <div class="worte" id="domino42">gibt</div>
 <div class="worte" id="domino43">ein</div>
-<div class="worte" id="domino44">leckeres</div>
-<div class="worte" id="domino45">Buffet.</div>
+	
+    <div class="worte" id="domino44">leckeres</div>
+
+	<div class="worte" id="domino45">Buffet.</div>
 <div class="worte" id="domino46">Wir</div>
 <div class="worte" id="domino47">freuen</div>
-<div class="worte" id="domino48">uns</div>
-<div class="worte" id="domino49">auf</div>
+    <div class="worte" id="domino48">uns</div>
+
+	<div class="worte" id="domino49">auf</div>
 <div class="worte" id="domino50">Euch!</div>
 
 </div>
@@ -81,7 +87,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 function preload() {
 
     game.load.image('vordergrund', 'assets/plattform-vordergrund.png');
-    game.load.image('ground', 'assets/platform.png');
+    game.load.image('ground', 'assets/platform1.png');
+	
 	game.load.image('underground', 'assets/underground.png');
     game.load.image('star', 'assets/star.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
@@ -95,7 +102,8 @@ function preload() {
 }
 
 var player;
-var enemy;
+var enemy=[10];//10 Feinde
+
 var platforms;
 var vordergrund;
 var vorledge;
@@ -110,45 +118,15 @@ var enemysound;
 var enemyneu;
 var playersprung;
 var geschenk;
-var spielWeltBreite = 4000;
-
+var spielWeltBreite = 9000;
+var numEnemys = 10;
 var starCounter = 0;
 
 /*var invitation = ["<div id='liebe'>Liebe</div>",
 				"<div id='liebe'>Freunde!</div>",
 				"<div id='liebe'>Wir</div>",
 				"<div id='liebe'>Chris, </div>",
-				"<div id='liebe'>Matthias</div>",
-				" M<div id='liebe'>und</div>",
-				"<div id='liebe'>Antje</div>",
-				"<div id='liebe'>werden</div>",
-				"<div id='30'>Antje</div>",
-				"<div id='liebe'>34</div>",
-				"<div id='liebe'>und</div>",
-				"<div id='liebe'>40</div>",
-				"<div id='liebe'>Jahre</div> ",
-				"<div id='liebe'>alt!</div>",
-				"<div id='liebe'>und</div>",
-				"<div id='liebe'>wir</div>",
-				"<div id='liebe'>wollen</div>",
-				"<div id='liebe'>mit</div>",
-				" <div id='liebe'>Euch</div>",
-				"<div id='liebe'>zusammen</div>",
-				"<div id='liebe'>feiern!</div>",
-				"<div id='liebe'>Am</div>",
-				"<div id='liebe'>20.</div>",
-				" <div id='liebe'>Juni</div>",
-				"<div id='liebe'>2015</div>",
-				"<div id='liebe'>im</div>",
-				"<div id='liebe'>Gebäude</div>",
-				"<div id='liebe'>06</div>",
-				"<div id='liebe'>Der</div> ",
-				"<div id='liebe'>AG</div>",
-				"<div id='liebe'>Kultur</div>",
-				"<div id='liebe'>Beginn</div>",
-				"<div id='liebe'>ist</div>",
-				"<div id='liebe'>20:00</div>",
-				"<div id='liebe'>Uhr</div>"];//ca 50 Zeichen
+				];//ca 50 Zeichen
 */
 
 function create() {
@@ -176,7 +154,7 @@ function create() {
 	
 	//game.sound.setDecodedCallback([ enemyneu, enemysound, playersprung, geschenk ], this);
 
-    //  die platforms group beinhaltet den Boden und Plattformen auf die man spingen kann
+    //  die platforms group beinhaltet den Boden und Plattformen auf die man springen kann
     platforms = game.add.group();
 
     //  die Physik aktivieren für jedes Objekt, das in dieser Gruppe erstellt wird
@@ -186,7 +164,7 @@ function create() {
     var ground = platforms.create(0, game.world.height - 64, 'underground');
 
     //  Boden auf Spielbreite skalieren (das original sprite des bodens ist 400x32px)
-    ground.scale.setTo(20, 2);
+    ground.scale.setTo(10, 2);
 
     //  wenn auf boden gesprungen wird, wird verhindert da durch zu fallen
     ground.body.immovable = true;
@@ -194,76 +172,173 @@ function create() {
     // Plattformen erstellen
     var ledge = platforms.create(110, 100, 'ground'); //positionierung (höhe auf bildschirm) der plattformen 1.zahl x , 2. zahl y
     ledge.body.immovable = true;
-	ledge.z = 1;
+	//ledge.z = 1;
 	
-	var vorledge = platforms.create(-150, 280, 'vordergrund');
-	vorledge.body.immovable = true;
-	vorledge.z = 2;
+	//var vorledge = platforms.create(-150, 280, 'vordergrund');
+	//vorledge.body.immovable = true;
+	//vorledge.z = 2;
 	
+	/*vorledge = platforms.create(-150, 250, 'vordergrund');
+    vorledge.body.immovable = true;*/
+	
+    ledge = platforms.create(-50, 250, 'ground');
+    ledge.body.immovable = true;
+	
+	
+	
+	ledge = platforms.create(230, 300, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(310, 400, 'ground');
+    ledge.body.immovable = true;
 	
 
-	vorledge = platforms.create(-150, 250, 'vordergrund');
-    vorledge.body.immovable = true;
-	
-    ledge = platforms.create(-150, 250, 'ground');
+	ledge = platforms.create(470, 150, 'ground');
     ledge.body.immovable = true;
 	
-	
-	
-	ledge = platforms.create(400, 300, 'ground');
+	ledge = platforms.create(580, 300, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(-100, 400, 'ground');
-    ledge.body.immovable = true;
+
 	
-	ledge = platforms.create(900, 250, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(1200, 100, 'ground');
-    ledge.body.immovable = true;
-	
-	
-	ledge = platforms.create(1350, 420, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(1500, 270, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(1800, 100, 'ground');
+	ledge = platforms.create(740, 420, 'ground');
     ledge.body.immovable = true;
 
+	ledge = platforms.create(840, 270, 'ground');
+    ledge.body.immovable = true;
+		
+	ledge = platforms.create(960, 100, 'ground');
+    ledge.body.immovable = true;
 
-	ledge = platforms.create(2200, 440, 'ground');
+	ledge = platforms.create(1150, 440, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(1350, 180, 'ground');
     ledge.body.immovable = true;
 	
 	
-	ledge = platforms.create(2800, 180, 'ground');
+	ledge = platforms.create(1500, 350, 'ground');
     ledge.body.immovable = true;
 	
-	
-	ledge = platforms.create(3400, 350, 'ground');
+	ledge = platforms.create(1650, 150, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(3700, 150, 'ground');
+	ledge = platforms.create(1820, 270, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(3800, 270, 'ground');
+	ledge = platforms.create(2100, 200, 'ground');
     ledge.body.immovable = true;
 	
+	ledge = platforms.create(2290, 100, 'ground');
+    ledge.body.immovable = true;
 	
+	ledge = platforms.create(2400, 270, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(2600, 150, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(2950, 370, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(3190, 270, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(3330, 80, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(3560, 270, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(3780, 170, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(4000, 370, 'ground');
+    ledge.body.immovable = true;
+	
+		ledge = platforms.create(4250, 200, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(4500, 70, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(4650, 170, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(4800, 220, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(5050, 120, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(5150, 300, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(5500, 380, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(5700, 280, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(5900, 440, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(6100, 400, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(6300, 250, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(6520, 440, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(6660, 90, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(6800, 300, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(7000, 170, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(7100, 300, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(7300, 250, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(7500, 190, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(7700, 350, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(8200, 200, 'ground');
+    ledge.body.immovable = true;
+	
+	ledge = platforms.create(8500, 350, 'ground');
+    ledge.body.immovable = true;/*	*/
 	
 	
     // der Spieler und seine Einstellungen
     player = game.add.sprite(32, game.world.height - 150, 'dude');
 	
+	var enemyPos =[numEnemys];
 	
 	//der feind und seine einstellungen
-	enemy = game.add.sprite(32, game.world.height - 250, 'enemy');
+	for(i=0;i<numEnemys;i++){
+		enemy[i] = game.add.sprite(Math.random()*spielWeltBreite, 0, 'enemy');
+		game.physics.arcade.enable(enemy[i]);
+		enemy[i].body.bounce.y = 0.5;
+    	enemy[i].body.gravity.y = 40;
+    	enemy[i].body.collideWorldBounds = true;
+		
+	}
 	
 
     //  physics für den Spieler aktivieren
     game.physics.arcade.enable(player);
-	game.physics.arcade.enable(enemy);
+	
 
     //  Spielereinstellungen - spieler bekommt etwas sprungkraft
     player.body.bounce.y = 0.2;
@@ -271,9 +346,7 @@ function create() {
     player.body.collideWorldBounds = true;
 	
 	
-	enemy.body.bounce.y = 0.5;
-    enemy.body.gravity.y = 400;
-    enemy.body.collideWorldBounds = true;
+	
 
     //  2 animationen, nach links und nach rechts laufen - sprite des spielers ansprechen
     player.animations.add('left', [0, 1, 2, 3], 10, true);
@@ -281,10 +354,10 @@ function create() {
 	player.animations.add('playersprung');
 	
 	
-	
-	enemy.animations.add('left', [0, 1, 2, 3], 10, true);
-    enemy.animations.add('right', [5, 6, 7, 8], 10, true);
-
+	for(i=0;i<numEnemys;i++){
+		enemy[i].animations.add('left', [0, 1, 2, 3], 10, true);
+		enemy[i].animations.add('right', [5, 6, 7, 8], 10, true);
+	}
     //  sterne einsammeln
     stars = game.add.group();
 
@@ -296,10 +369,10 @@ function create() {
 	//game.time.events.loop(150, stars, this);
 
     //  sterne gleichmäßig voneinander entfernt erzeugen
-    for (var i = 0; i < 50; i++)
+    for (var i = 0; i < 51; i++)
     {
         //  einen stern innerhalb der stars-group erzeugen
-        //var star = stars.create(i * 90, 0, 'star');
+        //var star = stars.create(i * 50, 0, 'star');
 		
 		//create random distance between gifts
 		var giftDist = Math.random()*spielWeltBreite/50 + 60;
@@ -311,7 +384,7 @@ function create() {
 		
 
         //  jeder stern erhält einen zufälligen srungwert
-        star.body.bounce.y = 0.7 + Math.random() * 0.4+0.1;//je höher der randombereich umso mehr hopsen die geschenke
+        star.body.bounce.y = 0.5 + Math.random() * 0.4+0.1;//je höher der randombereich umso mehr hopsen die geschenke
 		
     }
 
@@ -337,7 +410,10 @@ function update() {
     //  spieler und sterne kollidieren mit den plattformen
     game.physics.arcade.collide(player, platforms);
     game.physics.arcade.collide(stars, platforms);
-	game.physics.arcade.collide(enemy, platforms);
+	for(i=0;i<numEnemys;i++){
+		game.physics.arcade.collide(enemy[i], platforms);
+	}
+	
 	
 
     //  wenn spieler sich mit stern überschneidet, rufe die collectStar function auf
@@ -373,31 +449,7 @@ function update() {
 		
 		
     }
-	
-	enemy.body.velocity.x = 10;
 
-    if (cursors.left.isDown)
-    {
-        //  bewegung nach links
-        enemy.body.velocity.x = -150;
-
-        enemy.animations.play('left');
-    }
-    else if (cursors.right.isDown)
-    {
-        //  bewegung nach rechts
-        enemy.body.velocity.x = 150;
-
-        enemy.animations.play('right');
-    }
-    else
-    {
-        //  still stehen
-		
-		enemy.animations.stop();
-
-        enemy.frame = 4;
-    }
     
     //  spieler hüpft, wenn er den boden berührt
     if (cursors.up.isDown && player.body.touching.down)
@@ -405,10 +457,28 @@ function update() {
         player.body.velocity.y = -350;
     }
 	
-	if (cursors.up.isDown && enemy.body.touching.down)
-    {
-        enemy.body.velocity.y = -350;
-    }
+	this.game.time.events.loop(.00000001, function() {
+		console.log("!");
+	});
+		for(i=0;i<numEnemys;i++){
+			var enemyMoventx = Math.random();
+			if (enemyMoventx < 0.5){
+				enemy[i].body.velocity.x = -150;
+				enemy[i].animations.play('left');
+				
+			}else{
+				enemy[i].body.velocity.x = 150;
+				enemy[i].animations.play('right');
+			}
+		}
+		
+	
+	
+		
+	
+	//enemy.body.velocity.y = this.game.world.randomY;
+
+
 
 }
 
@@ -433,6 +503,7 @@ $('#domino'+star.name).fadeIn();
 
     //  hinzufügen und aktualisieren des punktestandes und des lebensstandes
     score += 10;
+	
     //text = 'Punkte: ' + score;
 	
 	leben += 10;
@@ -440,15 +511,12 @@ $('#domino'+star.name).fadeIn();
 
 	$("#punkte").html('Punkte: ' + score);
 	$("#leben").html('Leben: ' + score);
+	
+	//livesText = game.add.text(680, 550, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
 }
 
 </script>
 
 
-<<<<<<< HEAD
-=======
-änderung
-    Du bist aber toll!
->>>>>>> origin/master
 </body>
 </html>
