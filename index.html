@@ -7,13 +7,13 @@
     <script type="text/javascript" src="js/phaser-world.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <style type="text/css">
-        body {margin: 0 auto;padding-left: 50px;}
-		#score{width:800px;height:300px;background:#ccc;}
+        body {margin: 0 auto;}
+		#score{width:400px;height:600px;background:#ccc;float: right;}
 		.worte {
 			display:none;
 			width: 80px; height: 20px; background-color: #FFF; border: 1px solid black; text-align: center; padding:7px; float: left;margin-left: 3px;
 		}
-		#leben, #punkte , #timer{background:#000;
+		#leben, #punkte {background:#000;
 		color:#fff;padding: 10px;}
 		
     </style>
@@ -22,7 +22,7 @@
 <div id="score">
 <div id="leben"> </div>
 <div id="punkte"> </div>
-<div id="timer"> </div>
+
 <div class="worte" id="domino1">Liebe</div>
 <div class="worte" id="domino2">Freunde!</div>
 <div class="worte" id="domino3">Wir:</div>
@@ -85,6 +85,13 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update }); // , render: render
 
+
+
+
+
+
+
+
 function preload() {
 
     game.load.image('vordergrund', 'assets/plattform-vordergrund.png');
@@ -99,6 +106,7 @@ function preload() {
 	game.load.audio('enemyneu', 'mukke/enemy-neu.mp3');
 	game.load.audio('playersprung', 'mukke/player-sprung.mp3');
 	game.load.audio('geschenk', 'mukke/ag_sound_collect_01.wav');
+	game.load.image('clouds', 'assets/cloud-platform.png');
 
 }
 
@@ -115,8 +123,7 @@ var stars;
 var score = 0;
 var scoreText;
 
-var timer = 0;
-var total;
+
 
 var enemysound;
 var enemyneu;
@@ -324,6 +331,10 @@ function create() {
     ledge.body.immovable = true;/*	*/
 	
 	
+	
+	
+	
+	
     // der Spieler und seine Einstellungen
     player = game.add.sprite(32, game.world.height - 150, 'dude');
 	
@@ -407,11 +418,7 @@ function create() {
     //cursors = game.input.keyboard.createCursorKeys();
 
 
-	timer.game.timecreate(false);
 	
-	timer.start();
-
-console.log(timer);
     
 }
 
@@ -513,7 +520,7 @@ $('#domino'+star.name).fadeIn();
 
     //  hinzufügen und aktualisieren des punktestandes und des lebensstandes
     score += 10;
-	timer +=1;
+	
 	
     //text = 'Punkte: ' + score;
 	
@@ -522,20 +529,19 @@ $('#domino'+star.name).fadeIn();
 
 	$("#punkte").html('Punkte: ' + score);
 	$("#leben").html('Leben: ' + score);
-	$('#timer').html('Zeit: ' + timer + 'sek');
-	timer.loop(2000, updateCounter, this);
+	
 	
 	//livesText = game.add.text(680, 550, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
 	
-	total++;
+	
 }
 
-function render() {
 
-    game.debug.text('Time until event: ' + timer.duration.toFixed(0), 32, 32);
-    game.debug.text('Loop Count: ' + total, 32, 64);
 
-}
+
+
+
+
 
 </script>
 
