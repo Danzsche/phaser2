@@ -8,7 +8,7 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <style type="text/css">
         body {margin: 0 auto;}
-		#score{width:400px;height:600px;background:#ccc;float: right;}
+		#score{width:400px;height:600px;background:#ccc;float: left;}
 		.worte {
 			display:none;
 			width: 80px; height: 20px; background-color: #FFF; border: 1px solid black; text-align: center; padding:7px; float: left;margin-left: 3px;
@@ -111,7 +111,7 @@ function preload() {
 }
 
 var player;
-var enemy=[10];//10 Feinde
+
 
 var platforms;
 var vordergrund;
@@ -130,8 +130,17 @@ var enemyneu;
 var playersprung;
 var geschenk;
 var spielWeltBreite = 10000;
-var numEnemys = 10;
+
+var numEnemys = 20;
+var enemy=[numEnemys];
+
+var moveDirEnemy=[numEnemys];
+var enemyIsFalling=[numEnemys];
+var moveSpeedEnemy=[numEnemys];
+var enemyTouchDownCounter=[numEnemys];
 var starCounter = 0;
+    
+
 
 /*var invitation = ["<div id='liebe'>Liebe</div>",
 				"<div id='liebe'>Freunde!</div>",
@@ -342,13 +351,18 @@ function create() {
 	
 	//der feind und seine einstellungen
 	for(i=0;i<numEnemys;i++){
-		enemy[i] = game.add.sprite(Math.random()*spielWeltBreite, 0, 'enemy');
-		game.physics.arcade.enable(enemy[i]);
+		//enemy[i] = game.add.sprite((i+1)*200, 0, 'enemy');
+        enemy[i] = game.add.sprite(Math.random()*spielWeltBreite, 0, 'enemy');
+        game.physics.arcade.enable(enemy[i]);
 		enemy[i].body.bounce.y = 0.5;
     	enemy[i].body.gravity.y = 40;
     	enemy[i].body.collideWorldBounds = true;
-		
+        
+        game.physics.arcade.enable(enemy[i]);//erforderlich???
+        enemyIsFalling[i] = true;
+		enemyTouchDownCounter[i] = 0;
 	}
+    
 	
 
     //  physics für den Spieler aktivieren
@@ -366,13 +380,15 @@ function create() {
     //  2 animationen, nach links und nach rechts laufen - sprite des spielers ansprechen
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
-	player.animations.add('playersprung');
+	player.animations.add('playersprung');//sound bei sprung
 	
 	
 	for(i=0;i<numEnemys;i++){
-		enemy[i].animations.add('left', [0, 1, 2, 3], 10, true);
-		enemy[i].animations.add('right', [5, 6, 7, 8], 10, true);
+		enemy[i].animations.add('left', [0, 1, 2, 3], 5, true);
+		enemy[i].animations.add('right', [5, 6, 7, 8], 5, true);
 	}
+    
+    
     //  sterne einsammeln
     stars = game.add.group();
 
@@ -437,7 +453,7 @@ function update() {
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
 	
 	
-	
+	//PLAYER
 	//game.physics.arcade.overlap(player, enemy, collectStar, null, this);
 
     //  setzt die spielergeschwindigkeit zurück (movement)
@@ -461,39 +477,55 @@ function update() {
     {
         //  still stehen
         player.animations.stop();
-
         player.frame = 4;
-		
-		
     }
 
-    
     //  spieler hüpft, wenn er den boden berührt
     if (cursors.up.isDown && player.body.touching.down)
     {
         player.body.velocity.y = -350;
     }
-	/*
-	this.game.time.events.loop(.00000001, function() {
-		console.log("!");
-	});*/
-		for(i=0;i<numEnemys;i++){
-			var enemyMoventx = Math.random();
-			if (enemyMoventx < 0.5){
-				enemy[i].body.velocity.x = -150;
-				enemy[i].animations.play('left');
-				
-			}else{
-				enemy[i].body.velocity.x = 150;
-				enemy[i].animations.play('right');
-			}
-		}
-		
 	
-	
-		
-	
-	//enemy.body.velocity.y = this.game.world.randomY;
+    //ENEMY
+    for(i=0;i<numEnemys;i++){
+        if(enemyIsFalling[i]){//noch fällt der feind einfach auf die nächste Platform
+            enemy[i].animations.stop();
+            enemy[i].frame = 4;
+            
+            //console.log(enemyTouchDownCounter[1]);
+
+            //console.log(enemyIsFalling[i])
+            if(enemy[i].body.touching.down){//jetzt hat er das erste Mal eine Platform berührt
+                enemyTouchDownCounter[i]++;//einfach ein wenig warten
+                if(enemyTouchDownCounter[i] > 100){
+                    enemyIsFalling[i] = false;//jetzt fällt der Feind nicht mehr
+                    moveDirEnemy[i] = Math.random();//in welche Richtung der Feind loslaufen soll
+                    if(moveDirEnemy[i] > 0,5)//nach rechts
+                        moveDirEnemy[i] = 25;
+                    else//oder links
+                        moveDirEnemy[i] =-25;
+                }
+            }
+        }else{//jetzt läuft er einfach hin und her
+
+            if(!enemy[i].body.touching.down){
+                 moveDirEnemy[i] = moveDirEnemy[i]*-1;
+            }
+            enemy[i].body.velocity.x = moveDirEnemy[i];
+
+            if (moveDirEnemy[i] > 0){//nach rechts
+                enemy[i].animations.play('right');
+
+            } 
+            if (moveDirEnemy[i] < 0){
+                enemy[i].animations.play('left');
+            }
+            
+            //  wenn spieler sich mit einem feind überschneidet, rufe die feindkontakt function auf
+            game.physics.arcade.overlap(player, enemy[i], feindKontakt, null, this);
+        }
+    }
+    
 
 
 
@@ -537,7 +569,9 @@ $('#domino'+star.name).fadeIn();
 }
 
 
-
+function feindKontakt (player, enemy) {
+    console.log("Kontakt: "+ enemy);
+}
 
 
 
