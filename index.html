@@ -13,7 +13,7 @@
 			display:none;
 			width: 80px; height: 20px; background-color: #FFF; border: 1px solid black; text-align: center; padding:7px; float: left;margin-left: 3px;
 		}
-		#leben, #punkte {background:#000;
+		#leben, #punkte , #timer{background:#000;
 		color:#fff;padding: 10px;}
 		
     </style>
@@ -22,6 +22,7 @@
 <div id="score">
 <div id="leben"> </div>
 <div id="punkte"> </div>
+<div id="timer"> </div>
 <div class="worte" id="domino1">Liebe</div>
 <div class="worte" id="domino2">Freunde!</div>
 <div class="worte" id="domino3">Wir:</div>
@@ -97,7 +98,7 @@ function preload() {
 	game.load.audio('enemysound', 'mukke/enemy.mp3');
 	game.load.audio('enemyneu', 'mukke/enemy-neu.mp3');
 	game.load.audio('playersprung', 'mukke/player-sprung.mp3');
-	game.load.audio('geschenk', 'mukke/geschenk.mp3');
+	game.load.audio('geschenk', 'mukke/ag_sound_collect_01.wav');
 
 }
 
@@ -114,11 +115,14 @@ var stars;
 var score = 0;
 var scoreText;
 
+var timer = 0;
+var total;
+
 var enemysound;
 var enemyneu;
 var playersprung;
 var geschenk;
-var spielWeltBreite = 9000;
+var spielWeltBreite = 10000;
 var numEnemys = 10;
 var starCounter = 0;
 
@@ -402,6 +406,12 @@ function create() {
 
     //cursors = game.input.keyboard.createCursorKeys();
 
+
+	timer.game.timecreate(false);
+	
+	timer.start();
+
+console.log(timer);
     
 }
 
@@ -456,10 +466,10 @@ function update() {
     {
         player.body.velocity.y = -350;
     }
-	
+	/*
 	this.game.time.events.loop(.00000001, function() {
 		console.log("!");
-	});
+	});*/
 		for(i=0;i<numEnemys;i++){
 			var enemyMoventx = Math.random();
 			if (enemyMoventx < 0.5){
@@ -503,6 +513,7 @@ $('#domino'+star.name).fadeIn();
 
     //  hinzufügen und aktualisieren des punktestandes und des lebensstandes
     score += 10;
+	timer +=1;
 	
     //text = 'Punkte: ' + score;
 	
@@ -511,8 +522,19 @@ $('#domino'+star.name).fadeIn();
 
 	$("#punkte").html('Punkte: ' + score);
 	$("#leben").html('Leben: ' + score);
+	$('#timer').html('Zeit: ' + timer + 'sek');
+	timer.loop(2000, updateCounter, this);
 	
 	//livesText = game.add.text(680, 550, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
+	
+	total++;
+}
+
+function render() {
+
+    game.debug.text('Time until event: ' + timer.duration.toFixed(0), 32, 32);
+    game.debug.text('Loop Count: ' + total, 32, 64);
+
 }
 
 </script>
