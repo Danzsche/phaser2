@@ -129,7 +129,7 @@ var enemysound;
 var enemyneu;
 var playersprung;
 var geschenk;
-var spielWeltBreite = 10000;
+var spielWeltBreite = 3000;
 
 var numEnemys = 20;
 var enemy=[numEnemys];
@@ -276,7 +276,7 @@ function create() {
 	ledge = platforms.create(4000, 370, 'ground');
     ledge.body.immovable = true;
 	
-		ledge = platforms.create(4250, 200, 'ground');
+	ledge = platforms.create(4250, 200, 'ground');
     ledge.body.immovable = true;
 	
 	ledge = platforms.create(4500, 70, 'ground');
@@ -406,9 +406,12 @@ function create() {
         //var star = stars.create(i * 50, 0, 'star');
 		
 		//create random distance between gifts
-		var giftDist = Math.random()*spielWeltBreite/50 + 60;
+		var giftDist = Math.random()*spielWeltBreite;
+		while(giftDist < 50 || giftDist > spielWeltBreite - 50){
+			giftDist = Math.random()*spielWeltBreite;
+		}
 
-		var star = stars.create(i * giftDist, 0, 'star');
+		var star = stars.create(giftDist, 0, 'star');
 		star.name = i;
         //  schwerkraft
         star.body.gravity.y = 300;
