@@ -6,86 +6,126 @@
 	<script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/phaser-world.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
     <style type="text/css">
-        body {margin: 0 auto;}
-		#score{width:400px;height:600px;background:#ccc;float: left;}
+		
+        body {color: #ffffff; background-color: #000000;font-family: 'Oswald', sans-serif;font-weight: 300; color: #fff;}
+		#wrapper {width: 1200px;height: 800px; margin: 0 auto; border: 1px solid white;}
+		#startbildschirm {width: 1200px; height: 800px; background-color: #000; }
+		#startbildschirm p {width: 600px; height: 250px; font-size: 10em;background-color: #F63;cursor: pointer;} 
+		
+		#score{width:400px;height:600px;background:#ccc;float: left; color: #000000;}
+		
+		#clear {clear: both;}
 		.worte {
 			display:none;
 			width: 80px; height: 20px; background-color: #FFF; border: 1px solid black; text-align: center; padding:7px; float: left;margin-left: 3px;
 		}
-		#leben, #punkte {background:#000;
-		color:#fff;padding: 10px;}
+		#leben, #timer {background:#000;color:#fff;padding: 10px;}
 		
     </style>
 </head>
 <body>
-<div id="score">
-<div id="leben"> </div>
-<div id="punkte"> </div>
 
-<div class="worte" id="domino1">Liebe</div>
-<div class="worte" id="domino2">Freunde!</div>
-<div class="worte" id="domino3">Wir:</div>
-<div class="worte" id="domino4">Chris,</div>
-<div class="worte" id="domino5">Matthias</div>
-<div class="worte" id="domino6">und</div>
-<div class="worte" id="domino7">Antje</div>
-<div class="worte" id="domino8">werden</div>
-<div class="worte" id="domino9">30</div>
-<div class="worte" id="domino10">34</div>
-<div class="worte" id="domino11">und</div>
-<div class="worte" id="domino12">40</div>
-<div class="worte" id="domino13">Jahre</div>
-<div class="worte" id="domino14">alt!</div>
-<div class="worte" id="domino15">und</div>
-<div class="worte" id="domino16">wollen</div>
-<div class="worte" id="domino17">mit</div>
-<div class="worte" id="domino18">Euch</div>
-<div class="worte" id="domino19">zusammen</div>
-<div class="worte" id="domino20">feiern!</div>
-<div class="worte" id="domino21">Am</div>
-<div class="worte" id="domino22">20.</div>
-<div class="worte" id="domino23">Juni</div>
-<div class="worte" id="domino24">2015</div>
-<div class="worte" id="domino25">im</div>
-<div class="worte" id="domino26">Gebäude 06</div>
-<div class="worte" id="domino27">der</div>
+<div id= "wrapper">
+	<div id="startbildschirm"> <p>Klick hier</p></div>
+    
+    <script type="text/javascript">
+$(document).ready(function(){
+    /* Hier der jQuery-Code */
+    $('#startbildschirm').click(function(){
+    	$('#startbildschirm').hide();
+    })
+});
+</script>
+    
+    
+    
+    
+    <div id="score">
+    <div id="leben">Leben: 3</div>
+    <div id="timer"> Timer: 0 sek</div>
+    
+    <div class="worte" id="domino1">Liebe</div>
+    <div class="worte" id="domino2">Freunde!</div>
+    <div class="worte" id="domino3">Wir:</div>
+    <div class="worte" id="domino4">Chris,</div>
+    <div class="worte" id="domino5">Matthias</div>
+    <div class="worte" id="domino6">und</div>
+    <div class="worte" id="domino7">Antje</div>
+    <div class="worte" id="domino8">werden</div>
+    <div class="worte" id="domino9">30</div>
+    <div class="worte" id="domino10">34</div>
+    <div class="worte" id="domino11">und</div>
+    <div class="worte" id="domino12">40</div>
+    <div class="worte" id="domino13">Jahre</div>
+    <div class="worte" id="domino14">alt!</div>
+    <div class="worte" id="domino15">und</div>
+    <div class="worte" id="domino16">wollen</div>
+    <div class="worte" id="domino17">mit</div>
+    <div class="worte" id="domino18">Euch</div>
+    <div class="worte" id="domino19">zusammen</div>
+    <div class="worte" id="domino20">feiern!</div>
+    <div class="worte" id="domino21">Am</div>
+    <div class="worte" id="domino22">20.</div>
+    <div class="worte" id="domino23">Juni</div>
+    <div class="worte" id="domino24">2015</div>
+    <div class="worte" id="domino25">im</div>
+    <div class="worte" id="domino26">Gebäude 06</div>
+    <div class="worte" id="domino27">der</div>
 
 	<div class="worte" id="domino28">AG</div>
 
-<div class="worte" id="domino29">Kultur.</div>
-
-<div class="worte" id="domino30">Beginn</div>
-<div class="worte" id="domino31">des</div>
-<div class="worte" id="domino32">Tanzes</div>   
-<div class="worte" id="domino33">ist</div>
-<div class="worte" id="domino34">um</div>
-<div class="worte" id="domino35">20:00</div>
-<div class="worte" id="domino36">Uhr</div>
-<div class="worte" id="domino37">Es</div>  
-<div class="worte" id="domino38">wird</div>
-<div class="worte" id="domino39">gegrillt</div>
-<div class="worte" id="domino40">und</div>
-<div class="worte" id="domino41">es</div>
-<div class="worte" id="domino42">gibt</div>
-<div class="worte" id="domino43">ein</div>
-	
+    <div class="worte" id="domino29">Kultur.</div>
+    
+    <div class="worte" id="domino30">Beginn</div>
+    <div class="worte" id="domino31">des</div>
+    <div class="worte" id="domino32">Tanzes</div>   
+    <div class="worte" id="domino33">ist</div>
+    <div class="worte" id="domino34">um</div>
+    <div class="worte" id="domino35">20:00</div>
+    <div class="worte" id="domino36">Uhr</div>
+    <div class="worte" id="domino37">Es</div>  
+    <div class="worte" id="domino38">wird</div>
+    <div class="worte" id="domino39">gegrillt</div>
+    <div class="worte" id="domino40">und</div>
+    <div class="worte" id="domino41">es</div>
+    <div class="worte" id="domino42">gibt</div>
+    <div class="worte" id="domino43">ein</div>
+        
     <div class="worte" id="domino44">leckeres</div>
-
-	<div class="worte" id="domino45">Buffet.</div>
-<div class="worte" id="domino46">Wir</div>
-<div class="worte" id="domino47">freuen</div>
+    
+    <div class="worte" id="domino45">Buffet.</div>
+    <div class="worte" id="domino46">Wir</div>
+    <div class="worte" id="domino47">freuen</div>
     <div class="worte" id="domino48">uns</div>
-
-	<div class="worte" id="domino49">auf</div>
-<div class="worte" id="domino50">Euch!</div>
+    
+    <div class="worte" id="domino49">auf</div>
+    <div class="worte" id="domino50">Euch!</div>
 
 </div>
+
+
 <script type="text/javascript">
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update }); // , render: render
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'wrapper', { preload: preload, create: create, update: update }); // , render: render
 
+/*
+NOCH ZU TUN:
 
+- feinde und päckchen ragen über plattform hinaus
+
+- wenn alle Päckchen eingesammelt und man noch am leben ist, gratulationsbildschirm
+
+- spiel soll erst losgehen, wenn startbildschirm weg ist
+
+- game over bildschirm -- funktioniert nicht
+
+- sounds einbauen - toteslied
+
+- Bildwechsel bei feindkontakt zb. player rot
+
+*/
 
 
 
@@ -93,16 +133,28 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 
 
 function preload() {
-
+	
+	game.load.image('sky', 'assets/sky.png');
+	game.load.image('transp', 'assets/transp.png');
+	game.load.image('menu_title', 'assets/menu_game_title.png');
+	game.load.image('menu_button1', 'assets/button1.png');
+	game.load.image('menu_button2', 'assets/button2.png');
+	game.load.image('menu_button3', 'assets/button3.png');
+	 game.load.image('menu_arrow', 'assets/arrow.png');
     game.load.image('vordergrund', 'assets/plattform-vordergrund.png');
     game.load.image('ground', 'assets/platform1.png');
+	game.load.image('groundgreen', 'assets/platform2.png');
 	
 	game.load.image('underground', 'assets/underground.png');
-    game.load.image('star', 'assets/star.png');
+    game.load.image('diamand', 'assets/diamand.png');
+	game.load.image('star', 'assets/star.png');
+	game.load.image('underground', 'assets/underground.png');
     game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 	game.load.spritesheet('enemy', 'assets/enemy.png', 32, 48);
 	
+	
 	game.load.audio('enemysound', 'mukke/enemy.mp3');
+	game.load.audio('dead', 'mukke/dead.mp3');
 	game.load.audio('enemyneu', 'mukke/enemy-neu.mp3');
 	game.load.audio('playersprung', 'mukke/player-sprung.mp3');
 	game.load.audio('geschenk', 'mukke/ag_sound_collect_01.wav');
@@ -112,7 +164,9 @@ function preload() {
 
 var player;
 
-
+var groundgreen;
+var sky;
+var transp;
 var platforms;
 var vordergrund;
 var vorledge;
@@ -120,34 +174,38 @@ var underground;
 var cursors;
 
 var stars;
+var diamands;
 var score = 0;
 var scoreText;
 
-
-
+var text;
+var dead;
 var enemysound;
 var enemyneu;
 var playersprung;
 var geschenk;
-var spielWeltBreite = 3000;
+var spielWeltBreite = 4000;
 
-var numEnemys = 20;
+var numEnemys = 10;
 var enemy=[numEnemys];
-
 var moveDirEnemy=[numEnemys];
 var enemyIsFalling=[numEnemys];
 var moveSpeedEnemy=[numEnemys];
 var enemyTouchDownCounter=[numEnemys];
+
 var starCounter = 0;
-    
+var lebenCounter = 0;
+var anzLeben = 3;
+var gameOver = false;
 
 
-/*var invitation = ["<div id='liebe'>Liebe</div>",
-				"<div id='liebe'>Freunde!</div>",
-				"<div id='liebe'>Wir</div>",
-				"<div id='liebe'>Chris, </div>",
-				];//ca 50 Zeichen
-*/
+//Counter
+var d = new Date();
+var startTime = d.getTime();
+
+
+var timer = 0;
+var total = 180;
 
 function create() {
 
@@ -159,7 +217,9 @@ function create() {
 
     //  ein einfacher Background für das Spiel
     // game.add.sprite(0, 0, 'sky');
-	game.stage.backgroundColor = '#999999';
+	//game.stage.backgroundColor = '#999999';
+	game.add.sprite(0, 0, 'sky');
+	//game.stage.image = 'sky';
 	
 	
 	//sound
@@ -171,6 +231,8 @@ function create() {
 	playersprung.allowMultible = false;
 	geschenk = game.add.audio('geschenk');
 	geschenk.allowMultible = false;
+	dead = game.add.audio('dead');
+	
 	
 	//game.sound.setDecodedCallback([ enemyneu, enemysound, playersprung, geschenk ], this);
 
@@ -184,7 +246,7 @@ function create() {
     var ground = platforms.create(0, game.world.height - 64, 'underground');
 
     //  Boden auf Spielbreite skalieren (das original sprite des bodens ist 400x32px)
-    ground.scale.setTo(10, 2);
+    ground.scale.setTo(3, 2);
 
     //  wenn auf boden gesprungen wird, wird verhindert da durch zu fallen
     ground.body.immovable = true;
@@ -192,21 +254,12 @@ function create() {
     // Plattformen erstellen
     var ledge = platforms.create(110, 100, 'ground'); //positionierung (höhe auf bildschirm) der plattformen 1.zahl x , 2. zahl y
     ledge.body.immovable = true;
-	//ledge.z = 1;
-	
-	//var vorledge = platforms.create(-150, 280, 'vordergrund');
-	//vorledge.body.immovable = true;
-	//vorledge.z = 2;
-	
-	/*vorledge = platforms.create(-150, 250, 'vordergrund');
-    vorledge.body.immovable = true;*/
 	
     ledge = platforms.create(-50, 250, 'ground');
     ledge.body.immovable = true;
+
 	
-	
-	
-	ledge = platforms.create(230, 300, 'ground');
+	ledge = platforms.create(230, 300, 'groundgreen');
     ledge.body.immovable = true;
 	
 	ledge = platforms.create(310, 400, 'ground');
@@ -216,7 +269,7 @@ function create() {
 	ledge = platforms.create(470, 150, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(580, 300, 'ground');
+	ledge = platforms.create(580, 300, 'groundgreen');
     ledge.body.immovable = true;
 	
 
@@ -224,10 +277,10 @@ function create() {
 	ledge = platforms.create(740, 420, 'ground');
     ledge.body.immovable = true;
 
-	ledge = platforms.create(840, 270, 'ground');
+	ledge = platforms.create(840, 270, 'groundgreen');
     ledge.body.immovable = true;
 		
-	ledge = platforms.create(960, 100, 'ground');
+	ledge = platforms.create(960, 100, 'groundgreen');
     ledge.body.immovable = true;
 
 	ledge = platforms.create(1150, 440, 'ground');
@@ -237,7 +290,7 @@ function create() {
     ledge.body.immovable = true;
 	
 	
-	ledge = platforms.create(1500, 350, 'ground');
+	ledge = platforms.create(1500, 350, 'groundgreen');
     ledge.body.immovable = true;
 	
 	ledge = platforms.create(1650, 150, 'ground');
@@ -246,10 +299,10 @@ function create() {
 	ledge = platforms.create(1820, 270, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(2100, 200, 'ground');
+	ledge = platforms.create(2100, 200, 'groundgreen');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(2290, 100, 'ground');
+	ledge = platforms.create(2290, 100, 'groundgreen');
     ledge.body.immovable = true;
 	
 	ledge = platforms.create(2400, 270, 'ground');
@@ -258,91 +311,24 @@ function create() {
 	ledge = platforms.create(2600, 150, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(2950, 370, 'ground');
+	ledge = platforms.create(2950, 370, 'groundgreen');
     ledge.body.immovable = true;
 	
 	ledge = platforms.create(3190, 270, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(3330, 80, 'ground');
+	ledge = platforms.create(3330, 80, 'groundgreen');
     ledge.body.immovable = true;
 	
 	ledge = platforms.create(3560, 270, 'ground');
     ledge.body.immovable = true;
 	
-	ledge = platforms.create(3780, 170, 'ground');
+	ledge = platforms.create(3780, 170, 'groundgreen');
     ledge.body.immovable = true;
 	
 	ledge = platforms.create(4000, 370, 'ground');
     ledge.body.immovable = true;
-	
-	ledge = platforms.create(4250, 200, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(4500, 70, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(4650, 170, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(4800, 220, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(5050, 120, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(5150, 300, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(5500, 380, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(5700, 280, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(5900, 440, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(6100, 400, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(6300, 250, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(6520, 440, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(6660, 90, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(6800, 300, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(7000, 170, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(7100, 300, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(7300, 250, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(7500, 190, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(7700, 350, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(8200, 200, 'ground');
-    ledge.body.immovable = true;
-	
-	ledge = platforms.create(8500, 350, 'ground');
-    ledge.body.immovable = true;/*	*/
-	
-	
-	
-	
-	
+
 	
     // der Spieler und seine Einstellungen
     player = game.add.sprite(32, game.world.height - 150, 'dude');
@@ -380,7 +366,9 @@ function create() {
     //  2 animationen, nach links und nach rechts laufen - sprite des spielers ansprechen
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
-	player.animations.add('playersprung');//sound bei sprung
+	player.animations.add('engel', [9, 10, 11, 12], 10, true);
+	
+	
 	
 	
 	for(i=0;i<numEnemys;i++){
@@ -391,19 +379,17 @@ function create() {
     
     //  sterne einsammeln
     stars = game.add.group();
+	diamands = game.add.group();
 
     //  physics für jeden stern dieser gruppe aktivieren
     stars.enableBody = true;
+	diamands.enableBody = true;
 	
-	//stars.createMultiple(250, 'stars', 0, false);
-	
-	//game.time.events.loop(150, stars, this);
 
     //  sterne gleichmäßig voneinander entfernt erzeugen
     for (var i = 0; i < 51; i++)
     {
         //  einen stern innerhalb der stars-group erzeugen
-        //var star = stars.create(i * 50, 0, 'star');
 		
 		//create random distance between gifts
 		var giftDist = Math.random()*spielWeltBreite;
@@ -420,12 +406,34 @@ function create() {
         //  jeder stern erhält einen zufälligen srungwert
         star.body.bounce.y = 0.5 + Math.random() * 0.4+0.1;//je höher der randombereich umso mehr hopsen die geschenke
 		
+		// manche sterne beinhalten leben
+		
+    }
+	
+	for (var i = 0; i < 4; i++)
+    {
+        //  eine leben innerhalb der diamanden-group erzeugen
+		
+		//create random distance between gifts
+		var giftDist = Math.random()*spielWeltBreite;
+		while(giftDist < 4 || giftDist > spielWeltBreite - 4){
+			giftDist = Math.random()*spielWeltBreite;
+		}
+
+		var diamand = diamands.create(giftDist, 0, 'diamand');
+		diamand.name = i;
+        //  schwerkraft
+        diamand.body.gravity.y = 300;
+		
+
+        //  jeder diamand erhält einen zufälligen srungwert
+        diamand.body.bounce.y = 0.5 + Math.random() * 0.4+0.1;//je höher der randombereich umso mehr hopsen die diamanden
+		
+		
+		
     }
 
-    //  ergebnisse anzeigen
-    //scoreText = game.add.text(66, 550, 'score: 0', { fontSize: '32px', fill: '#fff' });
-	//var leben = ["<div class='leben'> scoreText = game.add.text('leben: 0');</div>"];
-	//var punkte = ["<div class='punkte'> scoreText = game.add.text('punkte: 0');</div>"];
+   
 
     //  keyboard kontrolle, 
     cursors = game.input.keyboard.createCursorKeys();
@@ -435,102 +443,143 @@ function create() {
 	game.camera.follow(player);
 
     //cursors = game.input.keyboard.createCursorKeys();
-
-
-	
-    
+//collectLeben(player,star );
 }
 
-function update() {
 
-    //  spieler und sterne kollidieren mit den plattformen
-    game.physics.arcade.collide(player, platforms);
-    game.physics.arcade.collide(stars, platforms);
-	for(i=0;i<numEnemys;i++){
-		game.physics.arcade.collide(enemy[i], platforms);
+function update() {
+	if(!gameOver){
+		//  spieler und sterne kollidieren mit den plattformen
+		game.physics.arcade.collide(player, platforms);
+		game.physics.arcade.collide(stars, platforms);
+		game.physics.arcade.collide(diamands, platforms);
+		
+		for(i=0;i<numEnemys;i++){
+			game.physics.arcade.collide(enemy[i], platforms);
+		}
+		
+		
+	
+		//  wenn spieler sich mit stern überschneidet, rufe die collectStar function auf
+		game.physics.arcade.overlap(player, stars, collectStar, null, this);
+		game.physics.arcade.overlap(player, diamands, collectLeben, null, this);
+		
+		
+		//PLAYER
+	
+		//  setzt die spielergeschwindigkeit zurück (movement)
+		player.body.velocity.x = 0;
+	
+		if (cursors.left.isDown)
+		{
+			//  bewegung nach links
+			player.body.velocity.x = -150;
+	
+			player.animations.play('left');
+		}
+		else if (cursors.right.isDown)
+		{
+			//  bewegung nach rechts
+			player.body.velocity.x = 150;
+	
+			player.animations.play('right');
+		}
+		else
+		{
+			//  still stehen
+			player.animations.stop();
+			player.frame = 4;
+		}
+	
+		//  spieler hüpft, wenn er den boden berührt
+		if (cursors.up.isDown && player.body.touching.down)
+		{
+			player.body.velocity.y = -350;
+		}
+		
+		
+		//ENEMY
+		for(i=0;i<numEnemys;i++){
+			if(enemyIsFalling[i]){//noch fällt der feind einfach auf die nächste Platform
+				enemy[i].animations.stop();
+				enemy[i].frame = 4;
+				
+				//console.log(enemyTouchDownCounter[1]);
+	
+				//console.log(enemyIsFalling[i])
+				if(enemy[i].body.touching.down){//jetzt hat er das erste Mal eine Platform berührt
+					enemyTouchDownCounter[i]++;//einfach ein wenig warten
+					if(enemyTouchDownCounter[i] > 90){
+						enemyIsFalling[i] = false;//jetzt fällt der Feind nicht mehr
+						moveDirEnemy[i] = Math.random();//in welche Richtung der Feind loslaufen soll
+						if(moveDirEnemy[i] > 0,5)//nach rechts
+							moveDirEnemy[i] = 25;
+						else//oder links
+							moveDirEnemy[i] =-25;
+					}
+					
+
+	
+				}
+			}else{//jetzt läuft er einfach hin und her
+	
+				if(!enemy[i].body.touching.down){
+					 moveDirEnemy[i] = moveDirEnemy[i]*-1;
+				}
+				enemy[i].body.velocity.x = moveDirEnemy[i];
+	
+				if (moveDirEnemy[i] > 0){//nach rechts
+					enemy[i].animations.play('right');
+	
+				} 
+				if (moveDirEnemy[i] < 0){
+					enemy[i].animations.play('left');
+				}
+				
+				//  wenn spieler sich mit einem feind überschneidet, rufe die feindkontakt function auf
+				game.physics.arcade.overlap(player, enemy[i], feindKontakt, null, this);
+				
+				
+			}
+		}
+		
+		
+		//timer
+	
+		
+		d = new Date(); 
+		timer = Math.floor((d.getTime() - startTime) / 1000);
+		$("#timer").html('Time: ' + (total - timer));
+		if(timer > total){
+			gameOver=true;
+		}
+		
+	}else{//GAME OVER
+	
+		
+		player.body.velocity.x = 0;
+		player.body.velocity.y = -40;
+		//dead.play();
+		player.animations.play('engel');
+		//game.stage.setBackgroundColor = '#000000';
+		//game.add.sprite(0, 0, 'sky');
+		
+		
+		text = game.add.text(game.stage.centerX, 300, '- Aus und vorbei -');
+		 //	Center align
+		text.anchor.set(0.5);
+		text.align = 'center';
+		text.fill = '#ffffff';
+		text.fontSize = 30;	
+		
+			//engel ausfaden
+		player.alpha -= 0.002;
+
+	
+		
+	
 	}
 	
-	
-
-    //  wenn spieler sich mit stern überschneidet, rufe die collectStar function auf
-    game.physics.arcade.overlap(player, stars, collectStar, null, this);
-	
-	
-	//PLAYER
-	//game.physics.arcade.overlap(player, enemy, collectStar, null, this);
-
-    //  setzt die spielergeschwindigkeit zurück (movement)
-    player.body.velocity.x = 0;
-
-    if (cursors.left.isDown)
-    {
-        //  bewegung nach links
-        player.body.velocity.x = -150;
-
-        player.animations.play('left');
-    }
-    else if (cursors.right.isDown)
-    {
-        //  bewegung nach rechts
-        player.body.velocity.x = 150;
-
-        player.animations.play('right');
-    }
-    else
-    {
-        //  still stehen
-        player.animations.stop();
-        player.frame = 4;
-    }
-
-    //  spieler hüpft, wenn er den boden berührt
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.body.velocity.y = -350;
-    }
-	
-    //ENEMY
-    for(i=0;i<numEnemys;i++){
-        if(enemyIsFalling[i]){//noch fällt der feind einfach auf die nächste Platform
-            enemy[i].animations.stop();
-            enemy[i].frame = 4;
-            
-            //console.log(enemyTouchDownCounter[1]);
-
-            //console.log(enemyIsFalling[i])
-            if(enemy[i].body.touching.down){//jetzt hat er das erste Mal eine Platform berührt
-                enemyTouchDownCounter[i]++;//einfach ein wenig warten
-                if(enemyTouchDownCounter[i] > 100){
-                    enemyIsFalling[i] = false;//jetzt fällt der Feind nicht mehr
-                    moveDirEnemy[i] = Math.random();//in welche Richtung der Feind loslaufen soll
-                    if(moveDirEnemy[i] > 0,5)//nach rechts
-                        moveDirEnemy[i] = 25;
-                    else//oder links
-                        moveDirEnemy[i] =-25;
-                }
-            }
-        }else{//jetzt läuft er einfach hin und her
-
-            if(!enemy[i].body.touching.down){
-                 moveDirEnemy[i] = moveDirEnemy[i]*-1;
-            }
-            enemy[i].body.velocity.x = moveDirEnemy[i];
-
-            if (moveDirEnemy[i] > 0){//nach rechts
-                enemy[i].animations.play('right');
-
-            } 
-            if (moveDirEnemy[i] < 0){
-                enemy[i].animations.play('left');
-            }
-            
-            //  wenn spieler sich mit einem feind überschneidet, rufe die feindkontakt function auf
-            game.physics.arcade.overlap(player, enemy[i], feindKontakt, null, this);
-        }
-    }
-    
-
-
 
 }
 
@@ -540,48 +589,53 @@ function collectStar (player, star) {
 	geschenk.play();
 	//$('#score').append(invitation[starCounter]);
 	starCounter++;
-console.log(star.name);
-$('#domino'+star.name).fadeIn();
+	console.log(star.name);
+	$('#domino'+star.name).fadeIn();
     star.kill();
-	
-	//sound abspielen
-	//phaser.soundManager {
-		//touchLocked = true;
-		
-	//}
-	
-	
-	
+
 
     //  hinzufügen und aktualisieren des punktestandes und des lebensstandes
     score += 10;
-	
-	
-    //text = 'Punkte: ' + score;
-	
 	leben += 10;
-    //scoreText.text = 'Leben: ' + score;
+	
 
-	$("#punkte").html('Punkte: ' + score);
-	$("#leben").html('Leben: ' + score);
+    
+}
+
+function collectLeben (player, diamands) {
+    //lebenCounter++;
+	playersprung.play();
+	anzLeben++;
+	$("#leben").html('Leben: ' + anzLeben);
+	diamands.kill();
 	
+}
 	
-	//livesText = game.add.text(680, 550, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
+
+
+function feindKontakt (player, enemyKills) {
+	enemyneu.play();
+	anzLeben--;
+	if (anzLeben <= 0){
+		
+		
+		$("#leben").html('Leben: ' + anzLeben);
+		gameOver = true;
+		//this.game.paused = true;
+		
+	}else{
+		player.body.velocity.y = -350;
+		enemyKills.kill();
+		$("#leben").html('Leben: ' + anzLeben);
+	}
 	
 	
 }
-
-
-function feindKontakt (player, enemy) {
-    console.log("Kontakt: "+ enemy);
-}
-
-
-
 
 
 </script>
 
+</div><!-- END WRAPPER-->
 
 </body>
 </html>
