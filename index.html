@@ -1,3 +1,5 @@
+<!-- !!!!!!!!!!!! -->
+
 <!doctype html> 
 <html lang="en"> 
 <head> 
@@ -29,17 +31,6 @@
 
 <div id= "wrapper">
 	<div id="startbildschirm"> <p>Klick hier</p></div>
-    
-    <script type="text/javascript">
-$(document).ready(function(){
-    /* Hier der jQuery-Code */
-    $('#startbildschirm').click(function(){
-    	$('#startbildschirm').hide();
-    })
-});
-</script>
-    
-    
     
     
     <div id="score">
@@ -126,9 +117,18 @@ NOCH ZU TUN:
 - Bildwechsel bei feindkontakt zb. player rot
 
 */
+var startTime;
 
+$(document).ready(function(){
+    /* Hier der jQuery-Code */
+    $('#startbildschirm').click(function(){
+    	$('#startbildschirm').hide();
+        //Counter
+        var d = new Date();
+        startTime = d.getTime();
 
-
+    })
+});
 
 
 
@@ -199,13 +199,11 @@ var anzLeben = 3;
 var gameOver = false;
 
 
-//Counter
-var d = new Date();
-var startTime = d.getTime();
+
 
 
 var timer = 0;
-var total = 180;
+var total = 10;
 
 function create() {
 
@@ -550,7 +548,7 @@ function update() {
 		d = new Date(); 
 		timer = Math.floor((d.getTime() - startTime) / 1000);
 		$("#timer").html('Time: ' + (total - timer));
-		if(timer > total){
+		if(timer+1 > total){
 			gameOver=true;
 		}
 		
