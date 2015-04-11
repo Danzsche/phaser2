@@ -1,4 +1,4 @@
-<!-- !!!!!!!!!!!! -->
+
 
 <!doctype html> 
 <html lang="en"> 
@@ -24,7 +24,15 @@
 			width: 80px; height: 20px; background-color: #FFF; border: 1px solid black; text-align: center; padding:7px; float: left;margin-left: 3px;
 		}
 		#leben, #timer {background:#000;color:#fff;padding: 10px;}
-		
+		#gameOver{
+            position: absolute;
+            top:0;left:0;
+            font-size: 250px;
+            width: 1200px; 
+            height: 800px; 
+            background: rgba(100,100,100,0.0);
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -96,7 +104,8 @@
 
 </div>
 
-
+<div id="gameOver">Game Over</div>
+    
 <script type="text/javascript">
 
 var game = new Phaser.Game(600, 400, Phaser.AUTO, 'wrapper', { preload: preload, create: create, update: update }); // , render: render
@@ -108,11 +117,8 @@ NOCH ZU TUN:
 
 - wenn alle Päckchen eingesammelt und man noch am leben ist, gratulationsbildschirm
 
-- game over bildschirm -- funktioniert nicht
-
 - sounds einbauen - toteslied
 
-- Bildwechsel bei feindkontakt zb. player rot
 
 */
 var startTime;
@@ -138,7 +144,7 @@ function preload() {
 	game.load.image('menu_button1', 'assets/button1.png');
 	game.load.image('menu_button2', 'assets/button2.png');
 	game.load.image('menu_button3', 'assets/button3.png');
-	 game.load.image('menu_arrow', 'assets/arrow.png');
+    game.load.image('menu_arrow', 'assets/arrow.png');
     game.load.image('vordergrund', 'assets/plattform-vordergrund.png');
     game.load.image('ground', 'assets/platform1.png');
 	game.load.image('groundgreen', 'assets/platform2.png');
@@ -164,7 +170,6 @@ function preload() {
 var player;
 
 var groundgreen;
-var sky;
 var transp;
 var platforms;
 var vordergrund;
@@ -194,15 +199,15 @@ var enemyTouchDownCounter=[numEnemys];
 
 var starCounter = 0;
 var lebenCounter = 0;
-var anzLeben = 3;
+var anzLeben = 30;
 var gameOver = false;
 
-
-
+var playerEnemyContact = false;
 
 
 var timer = 0;
-var total = 180;
+var total = 5;
+
 
 function create() {
 
@@ -213,10 +218,7 @@ function create() {
 	game.world.setBounds(0, 0, spielWeltBreite, 600);
 
     //  ein einfacher Background für das Spiel
-    // game.add.sprite(0, 0, 'sky');
-	//game.stage.backgroundColor = '#999999';
 	game.add.sprite(0, 0, 'sky');
-	//game.stage.image = 'sky';
 	
 	
 	//sound
@@ -357,18 +359,13 @@ function create() {
     player.body.bounce.y = 0.2;
     player.body.gravity.y = 300;
     player.body.collideWorldBounds = true;
-	
-	
-	
+		
 
     //  2 animationen, nach links und nach rechts laufen - sprite des spielers ansprechen
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
 	player.animations.add('engel', [9, 10, 11, 12], 10, true);
-	player.animations.add('rot', [9], 10, true);
-	
-	
-	
+
 	
 	
 	for(i=0;i<numEnemys;i++){
@@ -496,6 +493,12 @@ function update() {
 		{
 			player.body.velocity.y = -350;
 		}
+        
+        if(playerEnemyContact){
+           player.animations.stop();
+           player.frame = 13;
+        }
+        
 		
 		
 		//ENEMY
@@ -539,16 +542,10 @@ function update() {
 				//  wenn spieler sich mit einem feind überschneidet, rufe die feindkontakt function auf
 				game.physics.arcade.overlap(player, enemy[i], feindKontakt, null, this);
 				
-				
 			}
 		}
 		
-		
 		//timer
-	
-		
-		
-		
 		d = new Date(); 
 		timer = Math.floor((d.getTime() - startTime) / 1000);
 		$("#timer").html('Time: ' + (total - timer));
@@ -566,18 +563,19 @@ function update() {
 		//game.stage.setBackgroundColor = '#000000';
 		//game.add.sprite(0, 0, 'sky');
 		
-		
+		/*
 		text = game.add.text(game.stage.centerX, game.stage.centerY, '- Aus und vorbei -');
 		 //	Center align
 		text.anchor.set(0.5);
 		text.align = 'center';
 		text.fill = '#ffffff';
 		text.fontSize = 30;	
-		
-			//engel ausfaden
+		*/
+    
+        //engel ausfaden
 		player.alpha -= 0.002;
 		//dead.play();
-
+        $('#gameOver').fadeIn();
 	
 		
 	
@@ -592,7 +590,7 @@ function collectStar (player, star) {
 	geschenk.play();
 	//$('#score').append(invitation[starCounter]);
 	starCounter++;
-	console.log(star.name);
+	//console.log(star.name);
 	$('#domino'+star.name).fadeIn();
     star.kill();
 
@@ -617,12 +615,11 @@ function collectLeben (player, diamands) {
 
 
 function feindKontakt (player, enemyKills) {
-	enemyneu.play();
+
+    enemyneu.play();
 	anzLeben--;
-	//player.animations.play('rot');
-	player.frame = 13;
+
 	if (anzLeben <= 0){
-		
 		
 		$("#leben").html('Leben: ' + anzLeben);
 		gameOver = true;
@@ -630,12 +627,15 @@ function feindKontakt (player, enemyKills) {
 		
 	}else{
 		player.body.velocity.y = -350;
-		
-		enemyKills.kill();
+        playerEnemyContact = true;
+        
+        enemyKills.kill();
 		$("#leben").html('Leben: ' + anzLeben);
 		
 	}
-	
+	setTimeout(function(){ playerEnemyContact = false; }, 1000);
+    
+    console.log(playerEnemyContact);
 	
 }
 
