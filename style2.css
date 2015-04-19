@@ -1,0 +1,104 @@
+*{margin: 0; padding: 0;}
+
+body, html{
+	background-color: #fff;
+	font-family: 'Homenaje', sans-serif; 
+	font-weight: 400;
+	color: #000;}
+#clear {clear: both;}
+#wrapper{
+	width: 100%;
+	height: 650px;
+	/*margin: 0 auto;*/
+	
+	background-color: #fff;}
+	
+#header {
+	width: 100%; 
+	height: 10px;}
+#steuerung {position: fixed; top: 30px;left: 30px; }
+#play {
+	width: 150px; height: 30px;
+	float: left;
+	color: #F30;
+	font-size: 2em;
+	cursor: pointer;
+	}
+#play a{
+	background-color: #0CC;
+	width: 200px; height: 30px;
+	float: left;
+	color: #f30;
+	text-decoration: none;}
+#link a{display: none;color: #fff;width: 200px; height: 30px;
+	float: left;
+	text-decoration: none;font-size: 2em;}	
+
+
+#leben{
+	font-size: 1.2em;
+	position: fixed;  top: 580px;left: 820px;z-index:999999;color: #000;}
+#timer{
+	font-size: 1.2em;
+	position: fixed;  top: 560px;left: 820px;z-index:999999;color: #000;}	
+	
+	
+
+	
+#spiel{
+	width: 800px;
+	height: 600px;
+	background-color: #000;
+	float: left;}
+	
+.worte {
+	font-family: Arial, Helvetica, sans-serif;
+	display:none; 
+	font-size: 1em;
+	margin: 2px;
+	float: left;
+	}
+
+
+#score {
+	width:400px;height: 600px;
+	float: left;
+	margin-left: 12px;}
+#score h1 {font-size: 3em;margin-bottom: 85px;}
+#score img {position: relative; top: -150px; float: right;margin-bottom: 85px;margin-right: 80px;}
+#einladung {
+	width:350px; }
+
+#startbildschirm {
+	width: 800px; 
+	height: 600px; 
+	background-color: #eCeCeC;}
+	
+	
+#startbildschirm p.klein {
+	margin: 0 auto;
+	width: 620px; 
+	height: 290px; 
+	font-size: 1.2em;
+	padding-top: 80px; 
+	font-family: Arial, sans-serif;}
+
+#startbildschirm img {
+	position: absolute;
+	top: 700px;
+	left:800px;
+	}
+	
+#gameOver p, #gratulation p{
+	position: absolute; top: 340px; z-index: 999;
+	background-color: #FC3;
+    font-size: 2.5em;
+	font-family: 'Orbitron', sans-serif;
+	font-weight: 900;
+    padding: 25px;
+    display: none;
+	margin: 0 auto;
+	color: #fff;}
+
+
+	

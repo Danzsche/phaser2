@@ -6,97 +6,87 @@
 	<script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/phaser-world.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-   <link href='http://fonts.googleapis.com/css?family=Orbitron:900|Homenaje' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:900|Homenaje' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
 <div id= "wrapper">
-	<div id="startbildschirm"> <p class="klein">Bewege dich mit den Pfeiltasten und sammle die Geschenke ein. <br>Die Feinde sollten umgangen werden, die kosten Dich Leben. <br>Die Rubine aber schenken Dir Leben. Du hast 3 Minuten Zeit. <br>Viel Glück!!!</p><p>PLAY</p></div>
-    
-    <div id="leben">Leben: 3</div>
-    <div id="timer"> Timer: 0 sek</div>
-    <div id="score">
-    
-    
-    <div class="worte" id="domino1">Liebe</div>
-    <div class="worte" id="domino2">Freunde!<br></div>
-    <div class="worte" id="domino3">Wir:</div>
-    
-    <div class="worte" id="domino4">Chris</div>
-    <div class="worte" id="domino5">und</div>
-    <div class="worte" id="domino6">Antje</div>
-    <div class="worte" id="domino7">werden</div>
-    <div class="worte" id="domino8">30</div>
-    
-    <div class="worte" id="domino9">und</div>
-    <div class="worte" id="domino10">40</div>
-    <div class="worte" id="domino11">Jahre</div>
-    <div class="worte" id="domino12">alt,</div>
-    <div class="worte" id="domino13">und</div>
-    <div class="worte" id="domino14">wollen</div>
-    <div class="worte" id="domino15">mit</div>
-    <div class="worte" id="domino16">Euch</div>
-    <div class="worte" id="domino17">zusammen</div>
-    <div class="worte" id="domino18">feiern!</div>
-    <div class="worte" id="domino19">Am</div>
-    <div class="worte" id="domino20">20.</div>
-    <div class="worte" id="domino21">Juni</div>
-    <div class="worte" id="domino22">2015</div>
-    <div class="worte" id="domino23">im</div>
-    <div class="worte" id="domino24">Gebäude 06</div>
-    <div class="worte" id="domino25">der</div>
 
-	<div class="worte" id="domino26">AG</div>
-
-    <div class="worte" id="domino27">Kultur.</div>
-    
-    <div class="worte" id="domino28">Beginn</div>
-    <div class="worte" id="domino29">des</div>
-    <div class="worte" id="domino30">Tanzes</div>   
-    <div class="worte" id="domino31">ist</div>
-    <div class="worte" id="domino32">um</div>
-    <div class="worte" id="domino33">20:00</div>
-    <div class="worte" id="domino34">Uhr. </div>
-    <div class="worte" id="domino35">Es</div>  
-    <div class="worte" id="domino36">wird</div>
-    <div class="worte" id="domino37">gegrillt</div>
-    <div class="worte" id="domino38">und</div>
-    <div class="worte" id="domino39">es</div>
-    <div class="worte" id="domino40">gibt</div>
-    <div class="worte" id="domino41">ein</div>
+		<div id="link"><a href="www.summsumm.de">noch einmal spielen</a></div>
+	<div id="main">
+        <div id="startbildschirm"> <p class="klein">Bewege dich mit den Pfeiltasten und sammle die Geschenke ein. <br>
+        Die Feinde sollten umgangen werden, die kosten Dich Leben. <br>Die Rubine aber schenken Dir Leben. Du hast 3 Minuten Zeit. <br>Viel Glück!!!</p>
+        <p>PLAY</p></div>
         
-    <div class="worte" id="domino42">leckeres</div>
+        <div id="leben">Leben: 3</div>
+        <div id="timer"> Timer: 0 sek</div>
     
-    <div class="worte" id="domino43">Buffet.</div>
-    <div class="worte" id="domino44">Wir</div>
-    <div class="worte" id="domino45">freuen</div>
-    <div class="worte" id="domino46">uns</div>
-    
-    <div class="worte" id="domino47">auf</div>
-    <div class="worte" id="domino48">Euch!</div>
+        <div id="score">
+            <div class="worte" id="domino1">Liebe</div>
+            <div class="worte" id="domino2">Freunde!</div>
+            <div class="worte" id="domino3">Wir:</div>
+            <div class="worte" id="domino4">Chris</div>
+            <div class="worte" id="domino5">und</div>
+            <div class="worte" id="domino6">Antje</div>
+            <div class="worte" id="domino7">werden</div>
+            <div class="worte" id="domino8">30</div>
+            <div class="worte" id="domino9">und</div>
+            <div class="worte" id="domino10">40</div>
+            <div class="worte" id="domino11">Jahre</div>
+            <div class="worte" id="domino12">alt,</div>
+            <div class="worte" id="domino13">und</div>
+            <div class="worte" id="domino14">wollen</div>
+            <div class="worte" id="domino15">mit</div>
+            <div class="worte" id="domino16">Euch</div>
+            <div class="worte" id="domino17">zusammen</div>
+            <div class="worte" id="domino18">feiern!</div>
+            <div class="worte" id="domino19">Am</div>
+            <div class="worte" id="domino20">20.</div>
+            <div class="worte" id="domino21">Juni</div>
+            <div class="worte" id="domino22">2015</div>
+            <div class="worte" id="domino23">im</div>
+            <div class="worte" id="domino24">Gebäude 06</div>
+            <div class="worte" id="domino25">der</div>
+            <div class="worte" id="domino26">AG</div>
+            <div class="worte" id="domino27">Kultur.</div>
+            <div class="worte" id="domino28">Beginn</div>
+            <div class="worte" id="domino29">des</div>
+            <div class="worte" id="domino30">Tanzes</div>   
+            <div class="worte" id="domino31">ist</div>
+            <div class="worte" id="domino32">um</div>
+            <div class="worte" id="domino33">20:00</div>
+            <div class="worte" id="domino34">Uhr. </div>
+            <div class="worte" id="domino35">Es</div>  
+            <div class="worte" id="domino36">wird</div>
+            <div class="worte" id="domino37">gegrillt</div>
+            <div class="worte" id="domino38">und</div>
+            <div class="worte" id="domino39">es</div>
+            <div class="worte" id="domino40">gibt</div>
+            <div class="worte" id="domino41">ein</div>    
+            <div class="worte" id="domino42">leckeres</div>
+            <div class="worte" id="domino43">Buffet.</div>
+            <div class="worte" id="domino44">Wir</div>
+            <div class="worte" id="domino45">freuen</div>
+            <div class="worte" id="domino46">uns</div>
+            <div class="worte" id="domino47">auf</div>
+            <div class="worte" id="domino48">Euch!</div>
+        </div>
+        
+        <div id="gameOver"><p>Game Over</p</div>
+        
+        <div id="gratulation"><p>Gratulation,<br> Du hast es geschafft</p></div>
 
-</div>
-
-<div id="gameOver"><p>Game Over</p><audio src="mukke/dead.mp3"></audio></div>
-<div id="gratulation"><p>Gratulation</p></div>
-    
 <script type="text/javascript">
-
-var game = new Phaser.Game(600, 600, Phaser.AUTO, 'wrapper', { preload: preload, create: create, update: update }); // , render: render
-
-
+var game = new Phaser.Game(600, 600, Phaser.AUTO, 'main', { preload: preload, create: create, update: update }); // , render: render
 
 /*
 NOCH ZU TUN:
 - feinde und päckchen ragen über plattform hinaus
 - gratulation player animation funzt nicht, soll sich drehen
-
-
+- nochmal spielen button
 virtuelle pfeil wegen mobile
-
 */
-
 
 var startTime;
 	$(document).ready(function(){
@@ -122,7 +112,6 @@ function preload() {
 	game.load.audio('enemyneu', 'mukke/enemy-neu.mp3');
 	game.load.audio('playersprung', 'mukke/player-sprung.mp3');
 	game.load.audio('geschenk', 'mukke/ag_sound_collect_01.wav');
-	
 	game.load.image("left arrow", "assets/left_arrow.png");
     game.load.image("right arrow", "assets/right_arrow.png");
 	game.load.image("up arrow", "assets/up_arrow.png");
@@ -154,31 +143,23 @@ var anzLeben = 3;
 var gameOver = false;
 var playerEnemyContact = false;
 var timer = 0;
-var total = 180;
-
+var total = 120;
 
 var RIGHT_BUTTON_X_POS = 300;
 var RIGHT_BUTTON_Y_POS = 400;
-
 var LEFT_BUTTON_X_POS = 100;
 var LEFT_BUTTON_Y_POS = 400;
-
 var UP_BUTTON_X_POS = 200;
 var UP_BUTTON_Y_POS = 400;
-
 var rightButton;
 var movingRight;
 var rightButtonDown;
-
 var leftButton;
 var movingLeft;
 var leftButtonDown;
-
 var upButton;
 var movingUp;
 var upButtonDown;
-
-
 var rightKey;
 var leftKey;
 
@@ -499,7 +480,7 @@ function update() {
 		player.animations.play('super');
 		player.alpha -= 0.002;
 		$('#gratulation p').fadeIn();
-			};
+		};
 }
 
 function collectStar (player, star) {
@@ -554,6 +535,9 @@ function feindKontakt (player, enemyKills) {
 	
 }
 </script>
+		
+	</div>
+    
 </div>
 </body>
 </html>
