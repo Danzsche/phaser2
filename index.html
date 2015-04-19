@@ -1,0 +1,526 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>Gebutstagseinladung</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/phaser-world.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:900|Homenaje' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="style2.css">
+</head>
+<body>
+<div id="wrapper">
+<div id="header"></div>
+	<div id="steuerung">
+    	<div id="play">PLAY</div>
+    	<div id="link"><a href="http://www.summsumm.de">PLAY</a></div>
+       
+        
+    </div><!--STEUERUNG-->
+       
+    <div id="spiel">
+    	<div id="startbildschirm"> 
+        <p class="klein">Bewege dich mit den Pfeiltasten und sammle die Geschenke ein. <br>
+        Die Feinde sollten umgangen werden, die kosten Dich Leben. <br>Die Rubine aber schenken Dir Leben und die Uhren schenken Dir wertvolle Sekunden. Du hast 2 Minuten. <br><br>
+        Um Sinn in den Text zu bekommen, sollten alle Geschenke eingesammelt werden ...<br><br>Viel Glück!!!
+        </p>
+        
+        </div><!--STARTBILDSCHIRM-->
+        
+        
+        <div id="gameOver"><p>Aus & Vorbei </p></div>
+    	<div id="gratulation"><p>Gratulation,<br> Du hast es geschafft</p></div>
+       
+        
+		<script type="text/javascript">
+                var game = new Phaser.Game(800, 600, Phaser.AUTO, 'spiel', { preload: preload, create: create, update: update }); // , render: render
+                
+                var startTime;
+                    $(document).ready(function(){
+                    $('#play').click(function(){
+                        $('#startbildschirm').hide();
+						$('#play').hide();
+						$('#link a').show();
+                        var d = new Date();
+                        startTime = d.getTime();
+                    })
+                });
+                
+                
+                function preload() {
+                    game.load.image('sky', 'assets/sky.png');
+                    game.load.image('ground', 'assets/platform1.png');
+                    game.load.image('groundgreen', 'assets/platform2.png');
+                    game.load.image('underground', 'assets/underground.png');
+                    game.load.image('diamand', 'assets/diamand.png');
+					game.load.image('blume', 'assets/blume.png');
+                    game.load.image('star', 'assets/star.png');
+                    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+                    game.load.spritesheet('enemy', 'assets/enemy.png', 32, 48);
+                    game.load.audio('enemysound', 'mukke/enemy.mp3');
+                    game.load.audio('dead', 'mukke/dead.mp3');
+                    game.load.audio('enemyneu', 'mukke/enemy-neu.mp3');
+                    game.load.audio('playersprung', 'mukke/player-sprung.mp3');
+                    game.load.audio('geschenk', 'mukke/ag_sound_collect_01.wav');
+					game.load.audio('zeit', 'mukke/ag_sound_laser_01.wav');
+                    game.load.image("left arrow", "assets/left_arrow.png");
+                    game.load.image("right arrow", "assets/right_arrow.png");
+                    game.load.image("up arrow", "assets/up_arrow.png");
+                }
+                
+                var player;
+                var groundgreen;
+                var platforms;
+                var underground;
+                var cursors;
+                var stars;
+                var diamands;
+				var blumes;
+                var score = 0;
+                var dead;
+                var enemysound;
+                var enemyneu;
+                var playersprung;
+                var geschenk;
+                var spielWeltBreite = 4100;
+                var numEnemys = 10;
+                var enemy=[numEnemys];
+                var moveDirEnemy=[numEnemys];
+                var enemyIsFalling=[numEnemys];
+                var moveSpeedEnemy=[numEnemys];
+                var enemyTouchDownCounter=[numEnemys];
+                var starCounter = 0;
+                var lebenCounter = 0;
+                var anzLeben = 3;
+                var gameOver = false;
+                var playerEnemyContact = false;
+                var timer = 0;
+                var total = 120;
+				var zeit;
+                
+                var RIGHT_BUTTON_X_POS = 300;
+                var RIGHT_BUTTON_Y_POS = 400;
+                var LEFT_BUTTON_X_POS = 100;
+                var LEFT_BUTTON_Y_POS = 400;
+                var UP_BUTTON_X_POS = 200;
+                var UP_BUTTON_Y_POS = 400;
+                var rightButton;
+                var movingRight;
+                var rightButtonDown;
+                var leftButton;
+                var movingLeft;
+                var leftButtonDown;
+                var upButton;
+                var movingUp;
+                var upButtonDown;
+                var rightKey;
+                var leftKey;
+  
+                function create() {
+
+                    game.physics.startSystem(Phaser.Physics.ARCADE);
+                    game.world.setBounds(0, 0, spielWeltBreite, 600);
+                    game.add.sprite(0, 0, 'sky');
+                    enemyneu = game.add.audio('enemyneu');
+                    enemyneu.allowMultible = false;
+                    enemysound = game.add.audio('enemy');
+                    enemysound.allowMultible = false;
+                    playersprung = game.add.audio('playersprung');
+                    playersprung.allowMultible = false;
+                    geschenk = game.add.audio('geschenk');
+                    geschenk.allowMultible = false;
+					zeit = game.add.audio('zeit');
+                    zeit.allowMultible = false;
+
+                    dead = game.add.audio('dead');
+                    dead.allowMultible = false;
+                    platforms = game.add.group();
+                    platforms.enableBody = true;
+                
+                   
+                var ground = platforms.create(0, game.world.height - 64, 'underground');
+                    ground.scale.setTo(3, 2);
+                    ground.body.immovable = true;
+                
+                var ledge = platforms.create(110, 100, 'ground'); 
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(-50, 250, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(230, 300, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(310, 400, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(470, 150, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(580, 300, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(740, 420, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(840, 270, 'groundgreen');
+                    ledge.body.immovable = true;	
+                    ledge = platforms.create(960, 100, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(1150, 440, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(1350, 180, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(1500, 350, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(1650, 150, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(1820, 270, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(2100, 200, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(2290, 100, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(2400, 270, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(2600, 150, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(2950, 370, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(3190, 270, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(3330, 80, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(3560, 270, 'ground');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(3780, 170, 'groundgreen');
+                    ledge.body.immovable = true;
+                    ledge = platforms.create(4000, 370, 'ground');
+                    ledge.body.immovable = true;
+                    
+                    player = game.add.sprite(32, game.world.height - 150, 'dude');
+                    
+                    var enemyPos =[numEnemys];
+                    
+                    
+                    for(i=0;i<numEnemys;i++){
+                        
+                        enemy[i] = game.add.sprite(Math.random()*spielWeltBreite, 0, 'enemy');
+                        game.physics.arcade.enable(enemy[i]);
+                        enemy[i].body.bounce.y = 0.5;
+                        enemy[i].body.gravity.y = 40;
+                        enemy[i].body.collideWorldBounds = true;
+                        
+                        game.physics.arcade.enable(enemy[i]);
+                        enemyIsFalling[i] = true;
+                        enemyTouchDownCounter[i] = 0;
+                    }
+                     
+                    game.physics.arcade.enable(player);
+                
+                    player.body.bounce.y = 0.2;
+                    player.body.gravity.y = 300;
+                    player.body.collideWorldBounds = true;
+                        
+                    player.animations.add('left', [0, 1, 2, 3], 10, true);
+                    player.animations.add('right', [5, 6, 7, 8], 10, true);
+                    player.animations.add('engel', [9, 10, 11, 12], 10, true);
+                    player.animations.add('super', [14, 15, 16, 17], 10, true);
+                
+                    
+                    
+                    for(i=0;i<numEnemys;i++){
+                        enemy[i].animations.add('left', [0, 1, 2, 3], 5, true);
+                        enemy[i].animations.add('right', [5, 6, 7, 8], 5, true);
+                    }
+                    
+                    
+                   
+                    stars = game.add.group();
+                    diamands = game.add.group();
+					blumes = game.add.group();
+                
+                    
+                    stars.enableBody = true;
+                    diamands.enableBody = true;
+					blumes.enableBody = true;
+                    
+                
+                    for (var i = 0; i < 50; i++)
+                    {
+                
+                        var giftDist = Math.random()*spielWeltBreite;
+                        while(giftDist < 50 || giftDist > spielWeltBreite - 80){
+                            giftDist = Math.random()*spielWeltBreite;
+                        }
+                
+                        var star = stars.create(giftDist, 0, 'star');
+                        star.name = i;
+                       
+                        star.body.gravity.y = 300;
+
+                       
+                        star.body.bounce.y = 0.5 + Math.random() * 0.4+0.1;
+                        
+                        
+                    }
+                    
+                    for (var i = 0; i < 4; i++)
+                    {
+                        
+                        var giftDist = Math.random()*spielWeltBreite;
+                        while(giftDist < 4 || giftDist > spielWeltBreite - 4){
+                            giftDist = Math.random()*spielWeltBreite;
+                        }
+                
+                        var diamand = diamands.create(giftDist, 0, 'diamand');
+                        diamand.name = i;
+                        
+                        diamand.body.gravity.y = 300;
+                        diamand.body.bounce.y = 0.5 + Math.random() * 0.4+0.1;		
+                    }
+                
+                    
+					
+					for (var i = 0; i < 8; i++)
+                    {
+                        
+                        var giftDist = Math.random()*spielWeltBreite;
+                        while(giftDist < 8 || giftDist > spielWeltBreite - 8){
+                            giftDist = Math.random()*spielWeltBreite;
+                        }
+                
+                        var blume = blumes.create(giftDist, 0, 'blume');
+                        blume.name = i;
+                        
+                        blume.body.gravity.y = 400;
+                        blume.body.bounce.y = 0.5 + Math.random() * 0.3+0.1;		
+                    }
+                
+                    cursors = game.input.keyboard.createCursorKeys();
+                    game.camera.follow(player);
+                    
+             
+                }
+                
+                
+                function update() {
+                    if(!gameOver){
+                        
+                        game.physics.arcade.collide(player, platforms);
+                        game.physics.arcade.collide(stars, platforms);
+                        game.physics.arcade.collide(diamands, platforms);
+						game.physics.arcade.collide(blumes, platforms);
+                        
+                        for(i=0;i<numEnemys;i++){
+                            game.physics.arcade.collide(enemy[i], platforms);
+                        }
+                        
+                        game.physics.arcade.overlap(player, stars, collectStar, null, this);
+                        game.physics.arcade.overlap(player, diamands, collectLeben, null, this);
+						game.physics.arcade.overlap(player, blumes, collectTime, null, this);
+                        
+                    
+                        player.body.velocity.x = 0;
+                    
+                        if (cursors.left.isDown)
+                        {
+                            player.body.velocity.x = -150;
+                            player.animations.play('left');
+                        }
+                        else if (cursors.right.isDown)
+                        {
+                            player.body.velocity.x = 150;
+                            player.animations.play('right');
+                        }
+                        else
+                        {
+                            player.animations.stop();
+                            player.frame = 4;
+                        }
+                    
+                        
+                        if (cursors.up.isDown && player.body.touching.down)
+                        {
+                            player.body.velocity.y = -350;
+                        }
+                        
+                        if(playerEnemyContact){
+                           player.animations.stop();
+                           player.frame = 13;
+                        }
+                        
+                        
+                
+                        for(i=0;i<numEnemys;i++){
+                            if(enemyIsFalling[i]){
+                                enemy[i].animations.stop();
+                                enemy[i].frame = 4;
+                                
+                                
+                                if(enemy[i].body.touching.down){
+                                    enemyTouchDownCounter[i]++;
+                                    if(enemyTouchDownCounter[i] > 50){
+                                        enemyIsFalling[i] = false;
+                                        moveDirEnemy[i] = Math.random();
+                                        if(moveDirEnemy[i] > 0.5)
+                                            moveDirEnemy[i] = 25;
+                                        else
+                                            moveDirEnemy[i] =-25;
+                                    }
+                                }
+                            }else{
+                    
+                                if(!enemy[i].body.touching.down){
+                                     moveDirEnemy[i] = moveDirEnemy[i]*-1;
+                                }
+                                enemy[i].body.velocity.x = moveDirEnemy[i];
+                    
+                                if (moveDirEnemy[i] > 0){
+                                    enemy[i].animations.play('right');
+                    
+                                } 
+                                if (moveDirEnemy[i] < 0){
+                                    enemy[i].animations.play('left');
+                                }
+                                
+                                game.physics.arcade.overlap(player, enemy[i], feindKontakt, null, this);
+                                
+                            }
+                        }
+                        
+                        //timer
+                        d = new Date(); 
+                        timer = Math.floor((d.getTime() - startTime) / 1000);
+                        $("#timer").html('Time: ' + (total - timer) + ' sek');
+                        if(timer+1 > total){
+                            gameOver=true;
+                        }
+						
+						
+						
+						
+                        
+                    }else{//GAME OVER
+                    
+                        
+                        player.body.velocity.x = 0;
+                        player.body.velocity.y = -40;
+                        player.animations.play('engel');
+                        player.alpha -= 0.002;
+						$('#gameOver p').fadeIn();
+                    }
+                    
+                        if(anzLeben > 0 && starCounter == 50 && total > 0){
+                        
+                        player.body.velocity.x = 0;
+                        player.body.velocity.y = -40;
+                        player.animations.play('super');
+                        player.alpha -= 0.002;
+						$('#gratulation p').fadeIn();
+                        };
+                }
+                
+                function collectStar (player, star) {
+                    geschenk.play();
+                    starCounter++;
+                    $('#domino'+star.name).fadeIn();
+                    star.kill();    
+                }
+                
+                function collectLeben (player, diamands) {
+                    playersprung.play();
+                    anzLeben++;
+                    $("#leben").html('Leben: ' + anzLeben);
+                    diamands.kill();	
+                }
+				
+				// zeit gewinnen
+				function collectTime (player, blumes) {
+                    zeit.play();
+                    total++;
+                    blumes.kill();	
+                }
+                    
+                function feindKontakt (player, enemyKills) {
+                    enemyneu.play();
+                    anzLeben--;
+                
+                    if (anzLeben <= 0){
+                        $("#leben").html('Leben: ' + anzLeben);
+                        gameOver = true;		
+                    }else{
+                        player.body.velocity.y = -350;
+                        playerEnemyContact = true;
+                        
+                        enemyKills.kill();
+                        $("#leben").html('Leben: ' + anzLeben);
+                        
+                    }
+                    setTimeout(function(){ playerEnemyContact = false; }, 1000); 
+                }
+           </script>
+    </div><!--SPIEL-->
+	
+    	<div id="score">
+        <h1>Einladung</h1>
+        <img src="assets/friends.png">
+        <div id="clear"></div>
+       <div id="einladung">
+            <div class="worte" id="domino1">Liebe</div>
+            <div class="worte" id="domino2">Freunde!</div>
+            <div class="worte" id="domino0"><br></div>
+            <div class="worte" id="domino01"><br></div>
+            <div class="worte" id="domino3">Wir, </div>
+            <div class="worte" id="domino4">Chris</div>
+            <div class="worte" id="domino5">und</div>
+            <div class="worte" id="domino6">Antje</div>
+            <div class="worte" id="domino7">werden</div>
+            <div class="worte" id="domino8">30</div>
+            <div class="worte" id="domino9">und</div>
+            <div class="worte" id="domino10">40</div>
+            <div class="worte" id="domino11">Jahre</div>
+            <div class="worte" id="domino12">alt,</div>
+            <div class="worte" id="domino13">und</div>
+            <div class="worte" id="domino14">wollen</div>
+            <div class="worte" id="domino15">mit</div>
+            <div class="worte" id="domino16">Euch</div>
+            <div class="worte" id="domino17">zusammen</div>
+            <div class="worte" id="domino18">feiern!</div>
+            <div class="worte" id="domino19">Am</div>
+            <div class="worte" id="domino20">20.</div>
+            <div class="worte" id="domino21">Juni</div>
+            <div class="worte" id="domino22">2015</div>
+            <div class="worte" id="domino23">im</div>
+            <div class="worte" id="domino24">Gebäude 06</div>
+            <div class="worte" id="domino25">der</div>
+            <div class="worte" id="domino26">AG</div>
+            <div class="worte" id="domino27">Kultur.</div>
+            <div class="worte" id="domino28">Beginn</div>
+            <div class="worte" id="domino29">des</div>
+            <div class="worte" id="domino30">Tanzes</div>   
+            <div class="worte" id="domino31">ist</div>
+            <div class="worte" id="domino32">um</div>
+            <div class="worte" id="domino33">20:00</div>
+            <div class="worte" id="domino34">Uhr.</div>
+            <div class="worte" id="domino35">Es</div>  
+            <div class="worte" id="domino36">wird</div>
+            <div class="worte" id="domino37">gegrillt</div>
+            <div class="worte" id="domino38">und</div>
+            <div class="worte" id="domino39">es</div>
+            <div class="worte" id="domino40">gibt</div>
+            <div class="worte" id="domino41">ein</div>    
+            <div class="worte" id="domino42">leckeres</div>
+            <div class="worte" id="domino43">Buffet.</div>
+            <div class="worte" id="domino44">Wir</div>
+            <div class="worte" id="domino45">freuen</div>
+            <div class="worte" id="domino46">uns</div>
+            <div class="worte" id="domino47">auf</div>
+            <div class="worte" id="domino48">Euch!</div>
+           
+          </div>  
+             <div  id="leben">Leben: 3</div>
+        <div id="timer"> Time: 0 </div>
+        </div><!--SCORE-->
+  
+</div><!-- WRAPPER-->
+
+
+       
+       
+</body>
+</html>
