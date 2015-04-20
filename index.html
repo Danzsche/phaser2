@@ -5,8 +5,9 @@
     <title>Gebutstagseinladung</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/phaser-world.js"></script>
+    <script type="text/javascript" src="js/jquery-timer.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Orbitron:900|Homenaje' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="style2.css">
 </head>
 <body>
@@ -21,8 +22,8 @@
        
     <div id="spiel">
     	<div id="startbildschirm"> 
-        <p class="klein">Bewege dich mit den Pfeiltasten und sammle die Geschenke ein. <br>
-        Die Feinde sollten umgangen werden, die kosten Dich Leben. <br>Die Rubine aber schenken Dir Leben und die Uhren schenken Dir wertvolle Sekunden. Du hast 2 Minuten. <br><br>
+        <p class="klein">Bewege dich mit den Pfeiltasten und sammle die Geschenke ein. 
+        Die Feinde sollten umgangen werden, die kosten Dich Leben. Die Rubine aber schenken Dir Leben und die Uhren schenken Dir wertvolle Sekunden. <br>Du hast 2 Minuten. <br><br>
         Um Sinn in den Text zu bekommen, sollten alle Geschenke eingesammelt werden ...<br><br>Viel Glück!!!
         </p>
         
@@ -30,11 +31,11 @@
         
         
         <div id="gameOver"><p>Aus & Vorbei </p></div>
-    	<div id="gratulation"><p>Gratulation,<br> Du hast es geschafft</p></div>
+    	<div id="gratulation"><p>Gratulation,<br> Du hast es geschafft<br><br><a href="next.html">weitere Informationen</a></p></div>
        
         
 		<script type="text/javascript">
-                var game = new Phaser.Game(800, 600, Phaser.AUTO, 'spiel', { preload: preload, create: create, update: update }); // , render: render
+                var game = new Phaser.Game(600, 600, Phaser.AUTO, 'spiel', { preload: preload, create: create, update: update }); // , render: render
                 
                 var startTime;
                     $(document).ready(function(){
@@ -49,24 +50,21 @@
                 
                 
                 function preload() {
-                    game.load.image('sky', 'assets/sky.png');
-                    game.load.image('ground', 'assets/platform1.png');
-                    game.load.image('groundgreen', 'assets/platform2.png');
-                    game.load.image('underground', 'assets/underground.png');
-                    game.load.image('diamand', 'assets/diamand.png');
-					game.load.image('blume', 'assets/blume.png');
-                    game.load.image('star', 'assets/star.png');
-                    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-                    game.load.spritesheet('enemy', 'assets/enemy.png', 32, 48);
-                    game.load.audio('enemysound', 'mukke/enemy.mp3');
-                    game.load.audio('dead', 'mukke/dead.mp3');
+                    game.load.image('sky', 'phaser-assets/sky.png');
+                    game.load.image('ground', 'phaser-assets/platform1.png');
+                    game.load.image('groundgreen', 'phaser-assets/platform2.png');
+                    game.load.image('underground', 'phaser-assets/underground.png');
+                    game.load.image('diamand', 'phaser-assets/diamand.png');
+					game.load.image('blume', 'phaser-assets/blume.png');
+                    game.load.image('star', 'phaser-assets/star.png');
+                    game.load.spritesheet('dude', 'phaser-assets/dude.png', 32, 48, 17);
+                    game.load.spritesheet('enemy', 'phaser-assets/enemy.png', 32, 48);
+                    
+                 
                     game.load.audio('enemyneu', 'mukke/enemy-neu.mp3');
                     game.load.audio('playersprung', 'mukke/player-sprung.mp3');
                     game.load.audio('geschenk', 'mukke/ag_sound_collect_01.wav');
 					game.load.audio('zeit', 'mukke/ag_sound_laser_01.wav');
-                    game.load.image("left arrow", "assets/left_arrow.png");
-                    game.load.image("right arrow", "assets/right_arrow.png");
-                    game.load.image("up arrow", "assets/up_arrow.png");
                 }
                 
                 var player;
@@ -78,8 +76,8 @@
                 var diamands;
 				var blumes;
                 var score = 0;
-                var dead;
-                var enemysound;
+               
+               
                 var enemyneu;
                 var playersprung;
                 var geschenk;
@@ -99,23 +97,7 @@
                 var total = 120;
 				var zeit;
                 
-                var RIGHT_BUTTON_X_POS = 300;
-                var RIGHT_BUTTON_Y_POS = 400;
-                var LEFT_BUTTON_X_POS = 100;
-                var LEFT_BUTTON_Y_POS = 400;
-                var UP_BUTTON_X_POS = 200;
-                var UP_BUTTON_Y_POS = 400;
-                var rightButton;
-                var movingRight;
-                var rightButtonDown;
-                var leftButton;
-                var movingLeft;
-                var leftButtonDown;
-                var upButton;
-                var movingUp;
-                var upButtonDown;
-                var rightKey;
-                var leftKey;
+                
   
                 function create() {
 
@@ -124,8 +106,7 @@
                     game.add.sprite(0, 0, 'sky');
                     enemyneu = game.add.audio('enemyneu');
                     enemyneu.allowMultible = false;
-                    enemysound = game.add.audio('enemy');
-                    enemysound.allowMultible = false;
+                    
                     playersprung = game.add.audio('playersprung');
                     playersprung.allowMultible = false;
                     geschenk = game.add.audio('geschenk');
@@ -133,8 +114,7 @@
 					zeit = game.add.audio('zeit');
                     zeit.allowMultible = false;
 
-                    dead = game.add.audio('dead');
-                    dead.allowMultible = false;
+                    
                     platforms = game.add.group();
                     platforms.enableBody = true;
                 
@@ -316,7 +296,7 @@
                         
                     
                         player.body.velocity.x = 0;
-                    
+						
                         if (cursors.left.isDown)
                         {
                             player.body.velocity.x = -150;
@@ -382,6 +362,8 @@
                                 
                             }
                         }
+						
+					
                         
                         //timer
                         d = new Date(); 
@@ -389,30 +371,25 @@
                         $("#timer").html('Time: ' + (total - timer) + ' sek');
                         if(timer+1 > total){
                             gameOver=true;
-                        }
-						
-						
-						
-						
-                        
+                        } // NaN bei Startbildschirm	
                     }else{//GAME OVER
-                    
-                        
+
                         player.body.velocity.x = 0;
                         player.body.velocity.y = -40;
                         player.animations.play('engel');
                         player.alpha -= 0.002;
 						$('#gameOver p').fadeIn();
                     }
-                    
                         if(anzLeben > 0 && starCounter == 50 && total > 0){
-                        
                         player.body.velocity.x = 0;
                         player.body.velocity.y = -40;
-                        player.animations.play('super');
-                        player.alpha -= 0.002;
+                        player.animations.play('super');console.log('super'); //in console da aber spielt trotzdem nicht ab
+                        player.alpha -= 0.001;
 						$('#gratulation p').fadeIn();
-                        };
+						
+						$('#timer').hide();
+						$('#leben').hide();
+                        }
                 }
                 
                 function collectStar (player, star) {
@@ -429,7 +406,6 @@
                     diamands.kill();	
                 }
 				
-				// zeit gewinnen
 				function collectTime (player, blumes) {
                     zeit.play();
                     total++;
@@ -458,7 +434,7 @@
 	
     	<div id="score">
         <h1>Einladung</h1>
-        <img src="assets/friends.png">
+        <img src="phaser-assets/friends.png">
         <div id="clear"></div>
        <div id="einladung">
             <div class="worte" id="domino1">Liebe</div>
@@ -516,6 +492,9 @@
              <div  id="leben">Leben: 3</div>
         <div id="timer"> Time: 0 </div>
         </div><!--SCORE-->
+  
+  
+  
   
 </div><!-- WRAPPER-->
 

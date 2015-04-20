@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>next</title>
+</head>
+
+<body>
+<div id="wrapper">
+
+	<div id="header"><p>Wo Genau...</p>
+	</div><!-- HEADER -->
+
+	<div id="main">
+				<script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script>
+            <div style='overflow:hidden;height:400px;width:520px;'><div id='gmap_canvas' style='height:400px;width:520px;'></div>
+            <style>#gmap_canvas img{max-width:none!important;background:none!important}</style></div>
+             <a href='http://www.counter-zaehler.de'>Website Counter</a> <script type='text/javascript' src='http://embedmaps.com/google-maps-authorization/script.js?id=427140bd3e130a03fbbff5d641806b881ce13c2b'></script><script type='text/javascript'> function init_map(){
+            var myOptions = {
+            zoom:12,center:new google.maps.LatLng(51.8401446,12.228940800000032),
+            mapTypeId: google.maps.MapTypeId.ROADMAP};
+            map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
+            marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(51.8401446,12.228940800000032)});
+            infowindow = new google.maps.InfoWindow({
+            content:'<strong></strong><br>'+
+            'Bauhausstraße 10<br>'+
+            '06846 dessau<br>'
+            });
+            google.maps.event.addListener(marker, 'click', function(){
+            infowindow.open(map,marker);
+            });
+            infowindow.open(map,marker);
+            }
+            google.maps.event.addDomListener(window, 'load', init_map);
+            </script>
+	</div><!-- MAIN -->
+
+	<div id="footer">Kommst Du?
+	</div><!-- FOOTER -->
+    
+</div><!-- WRAPPER -->
+</body>
+</html>
