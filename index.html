@@ -5,7 +5,7 @@
     <title>Gebutstagseinladung</title>
 	<script type="text/javascript" src="js/phaser.min.js"></script>
     <script type="text/javascript" src="js/phaser-world.js"></script>
-    <script type="text/javascript" src="js/jquery-timer.js"></script>
+    <!--<script type="text/javascript" src="js/jquery-timer.js"></script>--><!--wozu war der? -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="style2.css">
@@ -15,7 +15,8 @@
 <div id="header"></div>
 	<div id="steuerung">
     	<div id="play">PLAY</div>
-    	<div id="link"><a href="http://www.summsumm.de">PLAY</a></div>
+        <!--- WOZU IST DER PLAY DA UNTEN??? -->
+    	<!--<div id="link"><a href="http://www.summsumm.de">PLAY</a></div>-->
        
         
     </div><!--STEUERUNG-->
@@ -50,6 +51,7 @@
                 
                 
                 function preload() {
+                    //HABE den Ordnername in phaser asset umbennant.... 
                     game.load.image('sky', 'phaser-assets/sky.png');
                     game.load.image('ground', 'phaser-assets/platform1.png');
                     game.load.image('groundgreen', 'phaser-assets/platform2.png');
@@ -94,8 +96,9 @@
                 var gameOver = false;
                 var playerEnemyContact = false;
                 var timer = 0;
-                var total = 240;
+                var total = 30;
 				var zeit;
+                var happy = false;
                 
                 
   
@@ -199,8 +202,8 @@
                     player.animations.add('left', [0, 1, 2, 3], 10, true);
                     player.animations.add('right', [5, 6, 7, 8], 10, true);
                     player.animations.add('engel', [9, 10, 11, 12], 10, true);
-                    player.animations.add('super', [14, 15, 16, 17], 10, true);
-                
+                    //player.animations.add('super', [14, 15, 16, 17], 10, true);
+                    player.animations.add('super', [14, 15, 16], 5, true);
                     
                     
                     for(i=0;i<numEnemys;i++){
@@ -309,8 +312,10 @@
                         }
                         else
                         {
-                            player.animations.stop();
-                            player.frame = 4;
+                            if(!happy){
+                                player.animations.stop();
+                                player.frame = 4;
+                            }
                         }
                     
                         
@@ -371,25 +376,30 @@
                         $("#timer").html('Time: ' + (total - timer) + ' sek');
                         if(timer+1 > total){
                             gameOver=true;
-                        } // NaN bei Startbildschirm	
-                    }else{//GAME OVER
+                        } // NaN bei Startbildschirm
+                        
+                        //if(anzLeben > 0 && starCounter == 50 && total > 0){
+                        if(anzLeben > 0 && starCounter >= 3 && total > 0){
+                            happy = true;
+                            player.body.velocity.x = 0;
+                            player.body.velocity.y = -40;
+                            player.animations.play('super');//'super'
+                            //console.log('super'); //in console da aber spielt trotzdem nicht ab
 
+                            $('#gratulation p').fadeIn();
+
+                            $('#timer').hide();
+                            $('#leben').hide();
+
+                        }
+                    }else{//GAME OVER
                         player.body.velocity.x = 0;
                         player.body.velocity.y = -40;
                         player.animations.play('engel');
                         player.alpha -= 0.002;
 						$('#gameOver p').fadeIn();
                     }
-                        if(anzLeben > 0 && starCounter == 50 && total > 0){
-                        player.body.velocity.x = 0;
-                        player.body.velocity.y = -40;
-                        player.animations.play('super');console.log('super'); //in console da aber spielt trotzdem nicht ab
-                        player.alpha -= 0.001;
-						$('#gratulation p').fadeIn();
-						
-						$('#timer').hide();
-						$('#leben').hide();
-                        }
+                    
                 }
                 
                 function collectStar (player, star) {
